@@ -1,0 +1,10 @@
+[    1713ms] [INFO] [HotReload] Connected @ http://127.0.0.1:9292/cdn/shopifycloud/theme-hot-reload/theme-hot-reload.js:300
+[    2079ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://perfumora-n06thvn0.myshopify.com/api/2026-01/graphql.json:1
+[    2080ms] [ERROR] [shopify-account] Menu "customer-account-main-menu" not found in Storefront API. Falling back to default menu items. @ https://cdn.shopify.com/storefront/web-components/account.js:1
+[    2229ms] [ERROR] Framing 'https://shop.app/' violates the following Content Security Policy directive: "frame-ancestors https://perfumora-n06thvn0.myshopify.com https://perfumora-n06thvn0.account.myshopify.com https://shopify.com". The request has been blocked.
+ @ :1
+[    2235ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ https://cdn.shopify.com/shopifycloud/shop-js/modules/v2/chunk.colors_CaG6LKvC.esm.js:1
+[    2255ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ https://cdn.shopify.com/shopifycloud/shop-js/modules/v2/chunk.ShopLogin_C0QE4DUe.esm.js:1
+[    3003ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://shop.app/accounts/pre_auth?client_id=4f4517ac-38c5-4507-b8d2-46f0865e8766&analytics_trace_id=8eb53dbc-0cae-45cf-902c-2b39c9e3062d&flow=embed&flow_version=account_menu&target_origin=http%3A%2F%2F127.0.0.1%3A9292&storefront_domain=https%3A%2F%2Fperfumora-n06thvn0.myshopify.com&scope=openid+email%3Averified+pay%3Asession_token+profile+shop%3Aaccount_uuid&locale=en:1
+[    3062ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ :3642
+[    3391ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:9292/favicon.ico:1

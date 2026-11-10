@@ -1,8 +1,11 @@
 /**
  * Perfumora Hero Stage Custom Element
  * Coordinates fragrance carousel state, watermark transitions, price & size updates,
- * keyboard navigation, and scrollytelling transition between Hero (Beat 1) and Manifesto (Beat 2).
- * Leaves the center/drifting slot ready for the 3D bottle mount in Step 8.
+ * keyboard navigation, and scrollytelling transitions across all 3 Opening Stage beats:
+ * - Beat 1: Hero (watermark, navigation arrows, counter, centered bottle)
+ * - Beat 2: Manifesto (watermark/arrows fade, copy slides in flush-left, bottle drifts 34vw right)
+ * - Beat 3: Ritual (Manifesto fades, bottle returns to center, Ritual header + 3 steps flank bottle)
+ * Leaves the bottle slot ready for the 3D bottle in Step 8.
  */
 
 function relativeLuminance(hex) {
@@ -88,6 +91,7 @@ export class HeroStage extends HTMLElement {
     this.prevBtn = this.querySelector('[ref="prevButton"]');
     this.nextBtn = this.querySelector('[ref="nextButton"]');
     this.manifestoPanel = this.querySelector('[ref="manifestoPanel"]');
+    this.ritualPanel = this.querySelector('[ref="ritualPanel"]');
     this.bottleMountWrap = this.querySelector('[ref="bottleMountWrap"]');
     this.counter = this.querySelector('[ref="counter"]');
     this.counterCurrent = this.querySelector('[ref="counterCurrent"]');
@@ -183,7 +187,7 @@ export class HeroStage extends HTMLElement {
 
     window.addEventListener('scroll', onScroll, { passive: true, capture: true });
     window.addEventListener('resize', onScroll, { passive: true });
-    
+
     // Also attach directly to .page-wrapper when present
     const pageWrapper = document.querySelector('.page-wrapper');
     if (pageWrapper) {
@@ -197,7 +201,7 @@ export class HeroStage extends HTMLElement {
   #handleScroll() {
     const pageWrapper = document.querySelector('.page-wrapper');
     const scrollContainer = pageWrapper && window.innerWidth >= 990 ? pageWrapper : null;
-    
+
     const windowH = scrollContainer ? scrollContainer.clientHeight : window.innerHeight;
     const stageH = this.offsetHeight;
     const scrollDist = stageH - windowH;
@@ -217,31 +221,63 @@ export class HeroStage extends HTMLElement {
 
     const isMobile = window.innerWidth <= 767;
 
-    // Phase 1 (0.00 -> 0.12): Pure Hero
-    // Phase 2 (0.12 -> 0.45): Dissolve Hero to Manifesto & Drift Bottle right
-    // Phase 3 (0.45 -> 1.00): Manifesto Hold
-    let heroPresence = 1;
+    // Choreography across 3 beats:
+    // Beat 1 (Hero): 0.00 -> 0.08 hold
+    // Beat 1 -> 2 (Hero -> Manifesto): 0.08 -> 0.28 transition
+    // Beat 2 (Manifesto): 0.28 -> 0.50 hold
+    // Beat 2 -> 3 (Manifesto -> Ritual): 0.50 -> 0.68 transition
+    // Beat 3 (Ritual): 0.68 -> 0.95 hold
+    // Release: 0.95 -> 1.00 unpins to normal document scroll
+
+    let heroPresence = 0;
     let manifestoPresence = 0;
-    let bottleProgress = 0;
+    let ritualPresence = 0;
+    let bottleX = 0; // in vw
+    let bottleY = 0; // in vh
 
     if (progress < 0.08) {
+      // Beat 1: Pure Hero
       heroPresence = 1;
       manifestoPresence = 0;
-      bottleProgress = 0;
-    } else if (progress > 0.42) {
-      heroPresence = 0;
-      manifestoPresence = 1;
-      bottleProgress = 1;
-    } else {
-      const t = (progress - 0.08) / 0.34;
-      // Smooth cubic bezier ease-in-out
+      ritualPresence = 0;
+      bottleX = 0;
+      bottleY = 0;
+    } else if (progress < 0.28) {
+      // Transition Hero -> Manifesto
+      const t = (progress - 0.08) / 0.20;
       const easeT = t * t * (3 - 2 * t);
       heroPresence = 1 - easeT;
       manifestoPresence = easeT;
-      bottleProgress = easeT;
+      ritualPresence = 0;
+      bottleX = easeT * 34;
+      bottleY = isMobile ? easeT * -16 : 0;
+    } else if (progress < 0.50) {
+      // Beat 2: Pure Manifesto Hold
+      heroPresence = 0;
+      manifestoPresence = 1;
+      ritualPresence = 0;
+      bottleX = 34;
+      bottleY = isMobile ? -16 : 0;
+    } else if (progress < 0.68) {
+      // Transition Manifesto -> Ritual
+      const t = (progress - 0.50) / 0.18;
+      const easeT = t * t * (3 - 2 * t);
+      heroPresence = 0;
+      manifestoPresence = 1 - easeT;
+      ritualPresence = easeT;
+      // Bottle glides back from 34vw to 0 (center)
+      bottleX = (1 - easeT) * 34;
+      bottleY = isMobile ? (1 - easeT) * -16 : 0;
+    } else {
+      // Beat 3: Pure Ritual Hold (0.68 -> 0.95)
+      heroPresence = 0;
+      manifestoPresence = 0;
+      ritualPresence = 1;
+      bottleX = 0;
+      bottleY = 0;
     }
 
-    // 1. Watermark, Navigation Arrows, Counter Fade
+    // 1. Watermark, Navigation Arrows & Counter (Hero Beat)
     if (this.watermarkWrap) {
       this.watermarkWrap.style.opacity = heroPresence.toFixed(3);
     }
@@ -257,7 +293,7 @@ export class HeroStage extends HTMLElement {
       this.counter.style.opacity = heroPresence.toFixed(3);
     }
 
-    // 2. Manifesto Panel Entry
+    // 2. Manifesto Beat Overlay
     if (this.manifestoPanel) {
       this.manifestoPanel.style.opacity = manifestoPresence.toFixed(3);
       const slideX = (1 - manifestoPresence) * -50;
@@ -266,13 +302,20 @@ export class HeroStage extends HTMLElement {
       this.manifestoPanel.setAttribute('aria-hidden', manifestoPresence < 0.3 ? 'true' : 'false');
     }
 
-    // 3. Bottle Drift (0 -> 34vw on desktop, 0 -> -16vh on mobile)
+    // 3. Ritual Beat Overlay
+    if (this.ritualPanel) {
+      this.ritualPanel.style.opacity = ritualPresence.toFixed(3);
+      const slideY = (1 - ritualPresence) * 20;
+      this.ritualPanel.style.transform = `translateY(${slideY.toFixed(1)}px)`;
+      this.ritualPanel.style.pointerEvents = ritualPresence > 0.5 ? 'auto' : 'none';
+      this.ritualPanel.setAttribute('aria-hidden', ritualPresence < 0.3 ? 'true' : 'false');
+    }
+
+    // 4. Bottle Position (0 -> 34vw -> 0)
     if (this.bottleMountWrap) {
       if (isMobile) {
-        const bottleY = bottleProgress * -16;
         this.bottleMountWrap.style.transform = `translate3d(0, ${bottleY.toFixed(1)}vh, 0)`;
       } else {
-        const bottleX = bottleProgress * 34;
         this.bottleMountWrap.style.transform = `translate3d(${bottleX.toFixed(2)}vw, 0, 0)`;
       }
     }

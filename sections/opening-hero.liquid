@@ -1,9 +1,10 @@
 {% comment %}
-  Section contract: Opening Stage (Hero & Manifesto)
+  Section contract: Opening Stage (Hero, Manifesto & Ritual)
   Renders the interactive Perfumora opening stage matching the haute-parfumerie reference:
   - Beat 1 (Hero): Oversized watermark, ambient radial glow, navigation arrows, slide counter, centered bottle
-  - Beat 2 (Manifesto): Scrollytelling transition where watermark/arrows fade, Manifesto copy slides in flush-left, bottle drifts 34vw to the right
-  - Live across both beats: Persistent ambient glow and bottom product bar (subtitle, large price, size pills, Add to Bag)
+  - Beat 2 (Manifesto): Watermark/arrows fade out, Manifesto copy slides in flush-left, bottle drifts 34vw right
+  - Beat 3 (Ritual): Manifesto fades, bottle glides back to center, Ritual header at top-left, 3 steps surround the bottle with hairline callout circuit lines and dots
+  - Live across all beats: Persistent ambient glow and bottom product bar (subtitle, large price, size pills, Add to Bag)
   - Center slot reserved for the 3D bottle in Step 8
 {% endcomment %}
 
@@ -111,9 +112,10 @@
   id="hero-stage"
   style="--hero-accent: {{ initial_accent }}; --hero-accent-glow: {{ initial_accent }}36;"
 >
-  <!-- In-page anchor targets -->
+  <!-- In-page anchor targets for seamless navigation -->
   <div class="hero-stage__anchor" id="hero"></div>
   <div class="hero-stage__anchor hero-stage__anchor--manifesto" id="manifesto"></div>
+  <div class="hero-stage__anchor hero-stage__anchor--ritual" id="ritual"></div>
 
   <script type="application/json" class="hero-stage__data">
     [
@@ -188,7 +190,7 @@
     ]
   </script>
 
-  <!-- Persistent Sticky Viewport across Hero and Manifesto beats -->
+  <!-- Persistent Sticky Viewport across Hero, Manifesto & Ritual beats -->
   <div class="hero-stage__sticky" ref="stickyViewport">
     <!-- Layer 1: Ambient Accent Radial Glow -->
     <div class="hero-stage__glow" aria-hidden="true"></div>
@@ -239,7 +241,83 @@
       </div>
     </div>
 
-    <!-- Layer 5: Center / Drifting Stage: Bottle Mount & Position Counter -->
+    <!-- Layer 5: Ritual Beat Overlay (Header top-left + 3 steps flanking center bottle) -->
+    <div class="hero-stage__ritual-panel" ref="ritualPanel" aria-hidden="true">
+      <!-- Top-left Header -->
+      <div class="hero-stage__ritual-header">
+        <span class="hero-stage__ritual-eyebrow">
+          {{ section.settings.ritual_eyebrow | default: 'THE RITUAL' }}
+        </span>
+        <h2 class="hero-stage__ritual-heading">
+          {{ section.settings.ritual_heading | default: 'THREE MOMENTS, ONE LASTING IMPRESSION' }}
+        </h2>
+        <p class="hero-stage__ritual-subtitle">
+          {{ section.settings.ritual_subtitle | default: 'There are three moments, one lasting impression.' }}
+        </p>
+      </div>
+
+      <!-- Desktop Steps Layout (Grid flanking center bottle) -->
+      <div class="hero-stage__ritual-steps">
+        <!-- 01 Prime — Left of bottle, line pointing right with dot -->
+        <div class="hero-stage__ritual-step hero-stage__ritual-step--1">
+          <div class="hero-stage__ritual-step-content">
+            <div class="hero-stage__ritual-step-title-wrap">
+              <span class="hero-stage__ritual-step-num">{{ section.settings.step_1_num | default: '01' }}</span>
+              <h3 class="hero-stage__ritual-step-title">{{ section.settings.step_1_title | default: 'Prime' }}</h3>
+            </div>
+            <p class="hero-stage__ritual-step-body">
+              {{ section.settings.step_1_body | default: 'A single press to warm pulse points — wrist, throat, the nape of the neck.' }}
+            </p>
+          </div>
+          <div class="hero-stage__ritual-line-wrap hero-stage__ritual-line-wrap--1" aria-hidden="true">
+            <svg viewBox="0 0 140 28" fill="none" class="hero-stage__ritual-svg">
+              <path d="M 0 6 L 65 6 L 98 22 L 132 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="132" cy="22" r="3.5" fill="currentColor" />
+            </svg>
+          </div>
+        </div>
+
+        <!-- 02 Apply — Upper right of bottle, line pointing from near bottle to Apply -->
+        <div class="hero-stage__ritual-step hero-stage__ritual-step--2">
+          <div class="hero-stage__ritual-line-wrap hero-stage__ritual-line-wrap--2" aria-hidden="true">
+            <svg viewBox="0 0 140 28" fill="none" class="hero-stage__ritual-svg">
+              <circle cx="8" cy="22" r="3.5" fill="currentColor" />
+              <path d="M 8 22 L 42 22 L 75 6 L 140 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="hero-stage__ritual-step-content">
+            <div class="hero-stage__ritual-step-title-wrap">
+              <span class="hero-stage__ritual-step-num">{{ section.settings.step_2_num | default: '02' }}</span>
+              <h3 class="hero-stage__ritual-step-title">{{ section.settings.step_2_title | default: 'Apply' }}</h3>
+            </div>
+            <p class="hero-stage__ritual-step-body">
+              {{ section.settings.step_2_body | default: "Hold the vessel a hand's width away and let the mist settle, never rub." }}
+            </p>
+          </div>
+        </div>
+
+        <!-- 03 Layer — Lower right of bottle, horizontal line with dot -->
+        <div class="hero-stage__ritual-step hero-stage__ritual-step--3">
+          <div class="hero-stage__ritual-line-wrap hero-stage__ritual-line-wrap--3" aria-hidden="true">
+            <svg viewBox="0 0 140 20" fill="none" class="hero-stage__ritual-svg">
+              <circle cx="8" cy="10" r="3.5" fill="currentColor" />
+              <path d="M 8 10 L 50 10 L 95 10 L 140 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="hero-stage__ritual-step-content">
+            <div class="hero-stage__ritual-step-title-wrap">
+              <span class="hero-stage__ritual-step-num">{{ section.settings.step_3_num | default: '03' }}</span>
+              <h3 class="hero-stage__ritual-step-title">{{ section.settings.step_3_title | default: 'Layer' }}</h3>
+            </div>
+            <p class="hero-stage__ritual-step-body">
+              {{ section.settings.step_3_body | default: 'Return through the day as the scent softens; the refill is always close.' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layer 6: Center / Drifting Stage: Bottle Mount & Position Counter -->
     <div class="hero-stage__center">
       <div class="hero-stage__bottle-mount-wrap" ref="bottleMountWrap">
         <div class="hero-stage__bottle-mount" id="hero-bottle-mount">
@@ -257,7 +335,7 @@
       </div>
     </div>
 
-    <!-- Layer 6: Persistent Bottom Product Bar (Live across all beats) -->
+    <!-- Layer 7: Persistent Bottom Product Bar (Live across all beats) -->
     <div class="hero-stage__product-bar" ref="productBar">
       <!-- Left: Subtitle & Large Price -->
       <div class="hero-stage__info">
@@ -320,7 +398,7 @@
     display: block;
     position: relative;
     width: 100%;
-    height: 220vh; /* Scrollytelling track for Hero (0-100vh) -> Manifesto (100-220vh) */
+    height: 320vh; /* Scrollytelling track: Hero (0-100vh) -> Manifesto (100-200vh) -> Ritual (200-320vh) */
     background-color: var(--color-background, #c9c2b8);
     box-sizing: border-box;
   }
@@ -335,7 +413,11 @@
   }
 
   .hero-stage__anchor--manifesto {
-    top: 85vh;
+    top: 75vh;
+  }
+
+  .hero-stage__anchor--ritual {
+    top: 175vh;
   }
 
   .hero-stage__sticky {
@@ -352,8 +434,9 @@
   }
 
   @media (max-width: 749px) {
+    hero-stage,
     .hero-stage {
-      height: 180vh;
+      height: 260vh;
     }
     .hero-stage__sticky {
       min-height: 540px;
@@ -510,19 +593,184 @@
     margin: 0;
   }
 
+  /* Ritual Beat Overlay */
+  .hero-stage__ritual-panel {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    bottom: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: var(--page-width, 1340px);
+    margin-inline: auto;
+    padding-inline: 48px;
+    padding-top: 18px;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: opacity, transform;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .hero-stage__ritual-header {
+    display: flex;
+    flex-direction: column;
+    max-width: 480px;
+  }
+
+  .hero-stage__ritual-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(26, 24, 22, 0.6);
+    margin-bottom: 6px;
+  }
+
+  .hero-stage__ritual-heading {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.85rem, 3.8vw, 3rem);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--color-foreground, #1a1816);
+    margin: 0;
+    max-width: 18ch;
+  }
+
+  .hero-stage__ritual-subtitle {
+    font-size: 0.8125rem;
+    color: rgba(26, 24, 22, 0.65);
+    margin-top: 6px;
+    margin-bottom: 0;
+  }
+
+  .hero-stage__ritual-steps {
+    position: absolute;
+    inset-inline: 48px;
+    top: 48%;
+    transform: translateY(-50%);
+    display: grid;
+    grid-template-columns: 1fr minmax(280px, 360px) 1fr;
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 16px;
+    row-gap: 32px;
+    pointer-events: none;
+  }
+
+  .hero-stage__ritual-step--1 {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: left;
+  }
+
+  .hero-stage__ritual-step--2 {
+    grid-column: 3;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .hero-stage__ritual-step--3 {
+    grid-column: 3;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .hero-stage__ritual-step-content {
+    max-width: 260px;
+    pointer-events: auto;
+  }
+
+  .hero-stage__ritual-step-title-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  .hero-stage__ritual-step-num {
+    font-family: var(--font-heading--family);
+    font-size: 1.625rem;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--hero-accent, #9a7177);
+  }
+
+  .hero-stage__ritual-step-title {
+    font-family: var(--font-body--family);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: #1a1816;
+    margin: 0;
+  }
+
+  .hero-stage__ritual-step-body {
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: rgba(26, 24, 22, 0.72);
+    margin-top: 4px;
+    margin-bottom: 0;
+  }
+
+  .hero-stage__ritual-line-wrap {
+    width: clamp(70px, 7.5vw, 120px);
+    flex-shrink: 0;
+    color: var(--hero-accent, #9a7177);
+    stroke: var(--hero-accent, #9a7177);
+  }
+
+  .hero-stage__ritual-line-wrap--1 {
+    margin-left: 12px;
+  }
+
+  .hero-stage__ritual-line-wrap--2,
+  .hero-stage__ritual-line-wrap--3 {
+    margin-right: 12px;
+  }
+
+  .hero-stage__ritual-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
   @media (max-width: 890px) {
-    .hero-stage__manifesto-panel {
-      padding-inline: 24px;
-      bottom: 140px;
-      align-items: flex-start;
-      padding-top: 60px;
+    .hero-stage__manifesto-panel,
+    .hero-stage__ritual-panel {
+      padding-inline: 20px;
+      bottom: 120px;
     }
-    .hero-stage__manifesto-content {
+    .hero-stage__ritual-steps {
+      position: static;
+      transform: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: auto;
+      margin-bottom: 8px;
+    }
+    .hero-stage__ritual-step--1,
+    .hero-stage__ritual-step--2,
+    .hero-stage__ritual-step--3 {
+      justify-content: flex-start;
+    }
+    .hero-stage__ritual-line-wrap {
+      display: none;
+    }
+    .hero-stage__ritual-step-content {
       max-width: 100%;
-    }
-    .hero-stage__manifesto-body p {
-      font-size: 0.9375rem;
-      line-height: 1.6;
     }
   }
 
@@ -737,7 +985,7 @@
 
 {% schema %}
 {
-  "name": "Opening Hero Stage",
+  "name": "Opening Stage",
   "tag": "section",
   "class": "section-opening-hero",
   "settings": [
@@ -773,11 +1021,99 @@
       "id": "manifesto_paragraph_2",
       "label": "Manifesto Paragraph 2",
       "default": "We focus on quality ingredients and long-lasting formulas made for everyday wear — simple, clean, and designed to stay with you from morning to night."
+    },
+    {
+      "type": "header",
+      "content": "Ritual Beat"
+    },
+    {
+      "type": "text",
+      "id": "ritual_eyebrow",
+      "label": "Ritual Eyebrow",
+      "default": "THE RITUAL"
+    },
+    {
+      "type": "text",
+      "id": "ritual_heading",
+      "label": "Ritual Heading",
+      "default": "THREE MOMENTS, ONE LASTING IMPRESSION"
+    },
+    {
+      "type": "text",
+      "id": "ritual_subtitle",
+      "label": "Ritual Subtitle",
+      "default": "There are three moments, one lasting impression."
+    },
+    {
+      "type": "header",
+      "content": "Step 01"
+    },
+    {
+      "type": "text",
+      "id": "step_1_num",
+      "label": "Step 1 Number",
+      "default": "01"
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "Step 1 Title",
+      "default": "Prime"
+    },
+    {
+      "type": "textarea",
+      "id": "step_1_body",
+      "label": "Step 1 Body",
+      "default": "A single press to warm pulse points — wrist, throat, the nape of the neck."
+    },
+    {
+      "type": "header",
+      "content": "Step 02"
+    },
+    {
+      "type": "text",
+      "id": "step_2_num",
+      "label": "Step 2 Number",
+      "default": "02"
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "Step 2 Title",
+      "default": "Apply"
+    },
+    {
+      "type": "textarea",
+      "id": "step_2_body",
+      "label": "Step 2 Body",
+      "default": "Hold the vessel a hand's width away and let the mist settle, never rub."
+    },
+    {
+      "type": "header",
+      "content": "Step 03"
+    },
+    {
+      "type": "text",
+      "id": "step_3_num",
+      "label": "Step 3 Number",
+      "default": "03"
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "Step 3 Title",
+      "default": "Layer"
+    },
+    {
+      "type": "textarea",
+      "id": "step_3_body",
+      "label": "Step 3 Body",
+      "default": "Return through the day as the scent softens; the refill is always close."
     }
   ],
   "presets": [
     {
-      "name": "Opening Hero Stage"
+      "name": "Opening Stage"
     }
   ]
 }

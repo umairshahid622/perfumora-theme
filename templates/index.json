@@ -12,44 +12,6 @@
       "type": "opening-hero",
       "settings": {}
     },
-    "ritual_section": {
-      "type": "ritual",
-      "blocks": {
-        "step_1": {
-          "type": "step",
-          "settings": {
-            "number": "01",
-            "title": "Prime",
-            "body": "A single press to warm pulse points — wrist, throat, the nape of the neck."
-          }
-        },
-        "step_2": {
-          "type": "step",
-          "settings": {
-            "number": "02",
-            "title": "Apply",
-            "body": "Hold the vessel a hand's width away and let the mist settle, never rub."
-          }
-        },
-        "step_3": {
-          "type": "step",
-          "settings": {
-            "number": "03",
-            "title": "Layer",
-            "body": "Return through the day as the scent softens; the refill is always close."
-          }
-        }
-      },
-      "block_order": [
-        "step_1",
-        "step_2",
-        "step_3"
-      ],
-      "settings": {
-        "eyebrow": "The Ritual",
-        "heading": "Three moments, one lasting impression"
-      }
-    },
     "product_list_fa6P9H": {
       "type": "product-list",
       "blocks": {
@@ -258,7 +220,6 @@
   },
   "order": [
     "opening_hero",
-    "ritual_section",
     "product_list_fa6P9H",
     "cta_section",
     "contact_section"
