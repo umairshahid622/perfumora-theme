@@ -51,7 +51,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<p>Gallery</p><h2>The Fragrances</h2>",
+                "text": "<p>THE COLLECTION</p><h2>SELECTED FRAGRANCES</h2>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -70,25 +70,10 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "product_list_button_MWeP9V": {
-              "type": "_product-list-button",
-              "name": "t:names.product_list_button",
-              "settings": {
-                "label": "View all",
-                "open_in_new_tab": false,
-                "style_class": "link",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
             }
           },
           "block_order": [
-            "product_list_text_YFtzcL",
-            "product_list_button_MWeP9V"
+            "product_list_text_YFtzcL"
           ]
         },
         "static-product-card": {
@@ -175,27 +160,43 @@
             "product_title_YXxMTj",
             "price_JQzVV4"
           ]
+        },
+        "view_all_button": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "VIEW THE FULL COLLECTION",
+            "link": "shopify://collections/all",
+            "style_class": "button-custom",
+            "custom_button_background": "#9a7177",
+            "custom_button_text": "#ffffff",
+            "custom_button_border": "#9a7177",
+            "width": "fit-content"
+          }
         }
       },
+      "block_order": [
+        "view_all_button"
+      ],
       "name": "t:names.product_list",
       "settings": {
         "collection": "all",
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "max_products": 8,
+        "max_products": 4,
         "columns": 4,
-        "mobile_columns": "2",
+        "mobile_columns": "1",
         "mobile_card_size": "60cqw",
-        "columns_gap": 8,
-        "rows_gap": 24,
+        "columns_gap": 20,
+        "rows_gap": 32,
         "icons_style": "arrow",
         "icons_shape": "none",
         "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
+        "horizontal_alignment": "center",
+        "gap": 32,
         "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-start": 64,
+        "padding-block-end": 64
       }
     },
     "cta_section": {

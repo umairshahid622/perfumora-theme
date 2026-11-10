@@ -5,7 +5,7 @@
   <!-- In templates/index.json: "type": "cta" -->
 {% endcomment %}
 
-<div class="cta-section section section--full-width" id="cta">
+<div class="cta-section" id="cta" data-tone="dark">
   <div class="cta-container">
     {% if section.settings.eyebrow != blank %}
       <span class="cta-eyebrow">{{ section.settings.eyebrow }}</span>
@@ -16,22 +16,70 @@
     {% endif %}
 
     {% if section.settings.button_label != blank %}
-      <a href="{{ section.settings.button_link }}" class="cta-button">
+      <a
+        href="{{ section.settings.button_link | default: '/collections/all' }}"
+        class="cta-button"
+        aria-label="{{ section.settings.button_label | escape }}"
+      >
         {{ section.settings.button_label }}
       </a>
     {% endif %}
   </div>
 </div>
 
+<script>
+  (function () {
+    function setupCtaTone() {
+      const header = document.querySelector('header-component') || document.querySelector('#header-component');
+      const cta = document.getElementById('cta');
+      if (!header || !cta) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              header.setAttribute('data-nav-tone', 'dark');
+            } else {
+              header.removeAttribute('data-nav-tone');
+            }
+          });
+        },
+        {
+          rootMargin: '-50px 0px -70% 0px',
+          threshold: 0,
+        }
+      );
+
+      observer.observe(cta);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupCtaTone);
+    } else {
+      setupCtaTone();
+    }
+  })();
+</script>
+
 {% stylesheet %}
   .cta-section {
-    background-color: #0b0b0c;
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background-color: #0b0b0c !important;
     color: #faf8f5;
-    padding-block: var(--cta-padding-top, 110px) var(--cta-padding-bottom, 110px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding-block: max(80px, 12vh);
+    overflow: hidden;
   }
 
   .cta-container {
-    max-width: 800px;
+    max-width: 980px;
     margin-inline: auto;
     padding-inline: 24px;
     display: flex;
@@ -42,23 +90,25 @@
 
   .cta-eyebrow {
     display: block;
+    font-family: var(--font-body--family);
     font-size: 0.75rem;
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: rgba(250, 248, 245, 0.55);
-    margin-bottom: 20px;
+    color: rgba(250, 248, 245, 0.45);
+    margin-bottom: 28px;
   }
 
   .cta-heading {
     font-family: var(--font-heading--family);
-    font-size: clamp(2.25rem, 5vw, 4rem);
-    font-weight: 600;
-    line-height: 1.08;
-    letter-spacing: 0.02em;
+    font-size: clamp(3.5rem, 8.5vw, 6.75rem);
+    font-weight: 700;
+    line-height: 0.94;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
     color: #faf8f5;
-    margin: 0 0 36px;
+    margin: 0 0 44px;
+    max-width: 18ch;
     text-wrap: balance;
   }
 
@@ -67,28 +117,68 @@
     align-items: center;
     justify-content: center;
     border-radius: 9999px;
-    background-color: #faf8f5;
-    color: #0b0b0c;
+    background-color: #9a7177;
+    color: #ffffff;
     font-family: var(--font-body--family);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     text-decoration: none;
-    padding: 15px 36px;
-    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5);
+    padding: 16px 40px;
+    box-shadow: 0 8px 24px -8px rgba(154, 113, 119, 0.45);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .cta-button:hover {
-    background-color: #ffffff;
+    opacity: 0.94;
     transform: translateY(-2px);
-    box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 12px 28px -6px rgba(154, 113, 119, 0.55);
+  }
+
+  /* Nav Tone Switching when Header sits over dark CTA section */
+  header-component[data-nav-tone='dark'],
+  header-component[data-nav-tone='dark'] .header__row--top,
+  header-component[data-nav-tone='dark'] .header__underlay {
+    background-color: transparent !important;
+    color: #faf8f5 !important;
+    --color-foreground: #faf8f5 !important;
+  }
+
+  header-component[data-nav-tone='dark'] .header-logo,
+  header-component[data-nav-tone='dark'] .header-logo a,
+  header-component[data-nav-tone='dark'] .header-logo h1,
+  header-component[data-nav-tone='dark'] .header-logo h2,
+  header-component[data-nav-tone='dark'] .header-logo span,
+  header-component[data-nav-tone='dark'] .menu-list__link,
+  header-component[data-nav-tone='dark'] .header-actions a,
+  header-component[data-nav-tone='dark'] .header-actions button,
+  header-component[data-nav-tone='dark'] .header-actions svg,
+  header-component[data-nav-tone='dark'] .header-actions__cart-icon svg,
+  header-component[data-nav-tone='dark'] .sound-toggle-btn {
+    color: #faf8f5 !important;
+    fill: #faf8f5 !important;
+    stroke: #faf8f5 !important;
+  }
+
+  header-component[data-nav-tone='dark'] .sound-toggle-btn {
+    border-color: rgba(250, 248, 245, 0.25) !important;
+    background: rgba(250, 248, 245, 0.08) !important;
   }
 
   @media (max-width: 749px) {
     .cta-section {
-      padding-block: 70px 70px;
+      min-height: 80vh;
+      padding-block: 80px;
+    }
+
+    .cta-heading {
+      font-size: clamp(2.5rem, 12vw, 3.8rem);
+      margin-bottom: 32px;
+    }
+
+    .cta-eyebrow {
+      margin-bottom: 20px;
     }
   }
 {% endstylesheet %}
@@ -131,4 +221,3 @@
   ]
 }
 {% endschema %}
-

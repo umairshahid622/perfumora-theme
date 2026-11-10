@@ -5,7 +5,7 @@
   <!-- In templates/index.json: "type": "contact" -->
 {% endcomment %}
 
-<div class="contact-section section section--page-width" id="contact">
+<div class="contact-section section section--page-width" id="contact" data-tone="light">
   <div class="contact-grid">
     <div class="contact-intro">
       {% if section.settings.eyebrow != blank %}
@@ -45,44 +45,46 @@
         {% endif %}
 
         <div class="contact-field">
-          <label for="ContactFormName-{{ section.id }}" class="contact-label">Name</label>
+          <label for="ContactFormName-{{ section.id }}" class="visually-hidden">Name</label>
           <input
             type="text"
             id="ContactFormName-{{ section.id }}"
             name="contact[name]"
             class="contact-input"
             value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-            placeholder="Your name"
+            placeholder="Name"
             required
+            autocomplete="name"
           >
         </div>
 
         <div class="contact-field">
-          <label for="ContactFormEmail-{{ section.id }}" class="contact-label">Email</label>
+          <label for="ContactFormEmail-{{ section.id }}" class="visually-hidden">Email</label>
           <input
             type="email"
             id="ContactFormEmail-{{ section.id }}"
             name="contact[email]"
             class="contact-input"
             value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-            placeholder="you@domain.com"
+            placeholder="Email"
             required
+            autocomplete="email"
           >
         </div>
 
         <div class="contact-field">
-          <label for="ContactFormMessage-{{ section.id }}" class="contact-label">Message</label>
+          <label for="ContactFormMessage-{{ section.id }}" class="visually-hidden">Message</label>
           <textarea
-            rows="4"
+            rows="5"
             id="ContactFormMessage-{{ section.id }}"
             name="contact[body]"
             class="contact-textarea"
-            placeholder="Tell us what you are looking for..."
+            placeholder="Message"
             required
           >{% if form.body %}{{ form.body }}{% endif %}</textarea>
         </div>
 
-        <button type="submit" class="contact-submit-btn">
+        <button type="submit" class="contact-submit-btn" aria-label="Send message">
           Send message
         </button>
       {% endform %}
@@ -92,57 +94,74 @@
 
 {% stylesheet %}
   .contact-section {
-    padding-block: var(--contact-padding-top, 90px) var(--contact-padding-bottom, 110px);
+    padding-block: clamp(80px, 12vh, 130px);
+    background: transparent;
   }
 
   .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(40px, 6vw, 90px);
     align-items: start;
+    max-width: 1100px;
+    margin-inline: auto;
+  }
+
+  .contact-intro {
+    display: flex;
+    flex-direction: column;
   }
 
   .contact-eyebrow {
     display: block;
+    font-family: var(--font-body--family);
     font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: rgba(26, 24, 22, 0.6);
-    margin-bottom: 14px;
+    margin-bottom: 18px;
   }
 
   .contact-heading {
     font-family: var(--font-heading--family);
-    font-size: clamp(2rem, 4vw, 3.25rem);
-    font-weight: 600;
-    line-height: 1.05;
-    letter-spacing: 0.02em;
+    font-size: clamp(3rem, 5.5vw, 4.75rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
     text-transform: uppercase;
-    color: var(--color-foreground, #1a1816);
-    margin: 0 0 20px;
+    color: #0b0b0c;
+    margin: 0 0 24px;
+    max-width: 12ch;
+    text-wrap: balance;
   }
 
   .contact-body {
-    font-size: 1rem;
+    font-family: var(--font-body--family);
+    font-size: 0.95rem;
     line-height: 1.65;
-    color: rgba(26, 24, 22, 0.75);
-    margin: 0 0 32px;
-    max-width: 420px;
+    color: rgba(26, 24, 22, 0.72);
+    margin: 0 0 36px;
+    max-width: 380px;
   }
 
   .contact-details {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    font-size: 0.9375rem;
+    font-family: var(--font-body--family);
+    font-size: 0.9rem;
   }
 
   .contact-email {
-    color: #1a1816;
-    text-decoration: underline;
-    text-underline-offset: 4px;
+    color: #0b0b0c;
+    text-decoration: none;
     font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+
+  .contact-email:hover {
+    opacity: 0.75;
   }
 
   .contact-location {
@@ -152,76 +171,76 @@
   .perfumora-contact-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    background-color: #eae5dc;
-    border-radius: 28px;
-    padding: 36px 32px;
-    border: 1px solid rgba(26, 24, 22, 0.08);
-    box-shadow: 0 16px 36px -22px rgba(11, 11, 12, 0.22);
+    gap: 16px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
   }
 
   .contact-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .contact-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(26, 24, 22, 0.7);
+    width: 100%;
   }
 
   .contact-input,
   .contact-textarea {
-    border-radius: 9999px;
-    border: 1px solid rgba(26, 24, 22, 0.2);
-    background-color: #f7f4ef;
-    color: #1a1816;
-    padding: 13px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 14px;
+    border: 1px solid rgba(26, 24, 22, 0.14);
+    background-color: rgba(26, 24, 22, 0.04);
+    color: #0b0b0c;
+    padding: 16px 20px;
     font-family: var(--font-body--family);
     font-size: 0.9375rem;
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .contact-textarea {
-    border-radius: 20px;
-    resize: vertical;
+  .contact-input::placeholder,
+  .contact-textarea::placeholder {
+    color: rgba(26, 24, 22, 0.45);
   }
 
   .contact-input:focus,
   .contact-textarea:focus {
-    border-color: #1a1816;
-    box-shadow: 0 0 0 2px rgba(26, 24, 22, 0.1);
+    border-color: rgba(26, 24, 22, 0.45);
+    background-color: rgba(26, 24, 22, 0.06);
+    box-shadow: 0 0 0 3px rgba(26, 24, 22, 0.04);
+  }
+
+  .contact-textarea {
+    resize: vertical;
+    min-height: 150px;
+    line-height: 1.5;
   }
 
   .contact-submit-btn {
+    align-self: flex-start;
     border-radius: 9999px;
     border: none;
-    background-color: #1a1816;
-    color: #faf8f5;
-    padding: 14px 28px;
+    background-color: #9a7177;
+    color: #ffffff;
+    padding: 15px 36px;
     font-family: var(--font-body--family);
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
-    margin-top: 8px;
-    transition: all 0.25s ease;
+    margin-top: 6px;
+    box-shadow: 0 8px 24px -8px rgba(154, 113, 119, 0.45);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .contact-submit-btn:hover {
-    background-color: #000000;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(11, 11, 12, 0.25);
+    opacity: 0.94;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -6px rgba(154, 113, 119, 0.55);
   }
 
   .contact-success {
-    padding: 12px 16px;
+    padding: 14px 20px;
     border-radius: 12px;
     background-color: rgba(79, 121, 66, 0.15);
     color: #2e5326;
@@ -229,20 +248,21 @@
   }
 
   .contact-error {
-    padding: 12px 16px;
+    padding: 14px 20px;
     border-radius: 12px;
     background-color: rgba(187, 40, 40, 0.12);
     color: #8c1d1d;
     font-size: 0.875rem;
   }
 
-  @media (max-width: 989px) {
+  @media (max-width: 860px) {
     .contact-grid {
       grid-template-columns: 1fr;
-      gap: 40px;
+      gap: 48px;
     }
-    .perfumora-contact-form {
-      padding: 28px 20px;
+
+    .contact-heading {
+      font-size: clamp(2.5rem, 9vw, 3.5rem);
     }
   }
 {% endstylesheet %}
@@ -291,4 +311,3 @@
   ]
 }
 {% endschema %}
-

@@ -13,130 +13,17 @@
   "sections": {
     "footer_m9NzUG": {
       "type": "footer",
-      "blocks": {
-        "brand_group": {
-          "type": "group",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-start",
-            "gap": 10,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "border": "none"
-          },
-          "blocks": {
-            "brand_title": {
-              "type": "text",
-              "settings": {
-                "text": "<h2>Perfumora</h2>",
-                "width": "100%",
-                "type_preset": "h3"
-              }
-            },
-            "brand_tagline": {
-              "type": "text",
-              "settings": {
-                "text": "<p>One sculpted vessel. Four expressions. Endlessly refillable.</p>",
-                "width": "100%",
-                "type_preset": "rte"
-              }
-            }
-          },
-          "block_order": [
-            "brand_title",
-            "brand_tagline"
-          ]
-        },
-        "footer_menu": {
-          "type": "menu",
-          "settings": {
-            "menu": "main-menu",
-            "menu_heading": "Navigation",
-            "heading_preset": "h6",
-            "type_font_primary_link": "body",
-            "type_case_primary_link": "uppercase",
-            "type_font_primary_size": "0.75rem",
-            "alignment": "left"
-          }
-        },
-        "newsletter_group": {
-          "type": "group",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-start",
-            "gap": 8,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "border": "none"
-          },
-          "blocks": {
-            "newsletter_title": {
-              "type": "text",
-              "settings": {
-                "text": "<h3>The Atelier Gazette</h3>",
-                "width": "100%",
-                "type_preset": "h4"
-              }
-            },
-            "newsletter_text": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Quiet dispatches on rare extractions and seasonal blends.</p>",
-                "width": "100%",
-                "type_preset": "rte"
-              }
-            },
-            "newsletter_form": {
-              "type": "email-signup",
-              "settings": {
-                "width": "fill",
-                "heading_preset": "h6",
-                "border_style": "all",
-                "input_style": "custom",
-                "border_width": 1,
-                "border_radius": 32,
-                "input_background_color": "#151415",
-                "input_text_color": "#faf8f5",
-                "input_border_color": "rgba(250, 248, 245, 0.2)",
-                "input_type_preset": "paragraph",
-                "style_class": "button-unstyled",
-                "display_type": "arrow",
-                "label": "Subscribe",
-                "integrated_button": true
-              }
-            }
-          },
-          "block_order": [
-            "newsletter_title",
-            "newsletter_text",
-            "newsletter_form"
-          ]
-        }
-      },
-      "block_order": [
-        "brand_group",
-        "footer_menu",
-        "newsletter_group"
-      ],
-      "name": "t:names.footer",
+      "blocks": {},
+      "block_order": [],
       "settings": {
-        "section_width": "page-width",
-        "gap": 32,
-        "background_color": "#0b0b0c",
-        "padding-block-start": 64,
-        "padding-block-end": 48
+        "brand_name": "PERFUMORA",
+        "tagline": "<p>One sculpted vessel. Four expressions.<br>Endlessly refillable.</p>",
+        "subtext": "SOUND CAN BE MUTED FROM THE HEADER"
       }
     },
     "footer_utilities_jLGE8U": {
       "type": "footer-utilities",
+      "disabled": true,
       "blocks": {
         "footer_copyright_jweRK8": {
           "type": "footer-copyright",

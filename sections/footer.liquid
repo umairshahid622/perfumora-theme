@@ -1,263 +1,254 @@
+{% comment %}
+  Section contract: Perfumora Luxury Footer
+  Renders the haute-parfumerie closing brandmark, in-page navigation, and fine print.
+  @example
+  <!-- In sections/footer-group.json: "type": "footer" -->
+{% endcomment %}
 
-
-{% liquid
-  if section.settings.background_color != blank
-    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
-  endif
-%}
-
-<div
-  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
-></div>
-<div
-  class="section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+<footer
+  id="footer"
+  class="perfumora-footer"
+  data-tone="dark"
+  {{ section.shopify_attributes }}
 >
-  {% liquid
-    assign total_blocks = section.blocks.size
+  <div class="perfumora-footer__inner">
+    <div class="perfumora-footer__grid">
+      <div class="perfumora-footer__brand">
+        <a href="#hero" class="perfumora-footer__wordmark" aria-label="Perfumora">
+          {{ section.settings.brand_name | default: 'PERFUMORA' }}
+        </a>
+        <div class="perfumora-footer__tagline">
+          {{ section.settings.tagline | default: '<p>One sculpted vessel. Four expressions.<br>Endlessly refillable.</p>' }}
+        </div>
+      </div>
 
-    # Grid layout calculations
-    assign grid_columns = total_blocks | at_most: 4
+      <nav class="perfumora-footer__nav" aria-label="Footer">
+        {% if section.settings.menu != blank and linklists[section.settings.menu].links.size > 0 %}
+          {% for link in linklists[section.settings.menu].links %}
+            <a href="{{ link.url }}" class="perfumora-footer__link">
+              {{ link.title }}
+            </a>
+          {% endfor %}
+        {% else %}
+          <a href="#hero" class="perfumora-footer__link">The Collection</a>
+          <a href="#manifesto" class="perfumora-footer__link">Manifesto</a>
+          <a href="#ritual" class="perfumora-footer__link">The Ritual</a>
+          <a href="#product_list_fa6P9H" class="perfumora-footer__link">Gallery</a>
+          <a href="#contact" class="perfumora-footer__link">Contact</a>
+        {% endif %}
+      </nav>
+    </div>
 
-    # Calculate last row counts using modulo arithmetic
-    # last_row_count = (total_blocks - 1) % N + 1
-    assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
-    assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
-
-    # Check if there are orphaned elements (single item in last row)
-    assign has_isolated_grid_item_desktop = false
-    assign has_isolated_grid_item_tablet = false
-
-    if total_blocks > 4 and last_row_count == 1
-      assign has_isolated_grid_item_desktop = true
-    endif
-
-    if total_blocks == 5
-      assign has_isolated_grid_item_tablet = true
-    endif
-  %}
-  <div
-    class="
-      footer-content
-      spacing-style
-      {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
-      {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
-    "
-    style="
-      {%  render 'spacing-style', settings: section.settings %}
-      --footer-gap: {{ section.settings.gap }}px;
-      --grid-columns: {{ grid_columns }};
-      --last-row-count: {{ last_row_count }};
-      --tablet-last-row-count: {{ tablet_last_row_count }};
-    "
-  >
-    {% content_for 'blocks' %}
+    <div class="perfumora-footer__bottom">
+      <span class="perfumora-footer__copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ section.settings.brand_name | default: 'PERFUMORA' }}
+      </span>
+      <span class="perfumora-footer__subtext">
+        {{ section.settings.subtext | default: 'SOUND CAN BE MUTED FROM THE HEADER' }}
+      </span>
+    </div>
   </div>
-</div>
+</footer>
+
+<script>
+  (function () {
+    function setupFooterTone() {
+      const header = document.querySelector('header-component') || document.querySelector('#header-component');
+      const footer = document.getElementById('footer');
+      if (!header || !footer) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              header.setAttribute('data-nav-tone', 'dark');
+            } else {
+              header.removeAttribute('data-nav-tone');
+            }
+          });
+        },
+        {
+          rootMargin: '-50px 0px -70% 0px',
+          threshold: 0,
+        }
+      );
+
+      observer.observe(footer);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupFooterTone);
+    } else {
+      setupFooterTone();
+    }
+  })();
+</script>
 
 {% stylesheet %}
-  .footer-content {
-    contain: content;
-    content-visibility: auto;
+  .perfumora-footer {
+    position: relative;
+    width: 100%;
+    min-height: 85vh;
+    min-height: 85dvh;
+    background-color: #0b0b0c !important;
+    color: #faf8f5;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    padding-block: clamp(80px, 12vh, 120px) clamp(40px, 6vh, 60px);
+    overflow: hidden;
+  }
+
+  .perfumora-footer__inner {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+
+  .perfumora-footer__grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--footer-gap);
+    grid-template-columns: 1.5fr 1fr;
+    gap: clamp(40px, 8vw, 100px);
     align-items: start;
+    margin-bottom: clamp(60px, 10vh, 100px);
   }
 
-  .footer-content .menu__heading__default {
-    font-weight: var(--font-heading--weight);
+  .perfumora-footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
   }
 
-  @media screen and (min-width: 750px) and (max-width: 989px) {
-    .footer-content {
-      grid-template-columns: repeat(min(var(--grid-columns), 3), 1fr);
-      grid-auto-flow: row;
-    }
-
-    .footer-content[style*='--grid-columns: 4'] {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .footer-content--isolated-grid-item-tablet > :last-child {
-      grid-column: 1 / -1;
-    }
+  .perfumora-footer__wordmark {
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: #faf8f5;
+    text-decoration: none;
+    transition: opacity 0.25s ease;
+    align-self: flex-start;
   }
 
-  @media screen and (min-width: 990px) {
-    .footer-content {
-      grid-template-columns: repeat(var(--grid-columns), 1fr);
+  .perfumora-footer__wordmark:hover {
+    opacity: 0.85;
+  }
+
+  .perfumora-footer__tagline,
+  .perfumora-footer__tagline p {
+    font-family: var(--font-body--family);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(250, 248, 245, 0.5);
+    margin: 0;
+    max-width: 320px;
+  }
+
+  .perfumora-footer__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .perfumora-footer__link {
+    font-family: var(--font-body--family);
+    font-size: 0.9375rem;
+    font-weight: 400;
+    color: rgba(250, 248, 245, 0.65);
+    text-decoration: none;
+    transition: color 0.25s ease;
+  }
+
+  .perfumora-footer__link:hover {
+    color: #faf8f5;
+  }
+
+  .perfumora-footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(250, 248, 245, 0.1);
+    padding-top: 28px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .perfumora-footer__copyright,
+  .perfumora-footer__subtext {
+    font-family: var(--font-body--family);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(250, 248, 245, 0.45);
+  }
+
+  @media (max-width: 749px) {
+    .perfumora-footer {
+      min-height: auto;
+      padding-block: 60px 32px;
     }
 
-    /* Single item centered */
-    .footer-content[style*='--grid-columns: 1'] {
-      justify-items: center;
+    .perfumora-footer__grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
     }
 
-    .footer-content--isolated-grid-item-desktop > :last-child {
-      grid-column: 1 / -1;
+    .perfumora-footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
     }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:names.footer",
-  "class": "section-wrapper",
-  "blocks": [
-    {
-      "type": "_divider"
-    },
-    {
-      "type": "@app"
-    },
-    {
-      "type": "button"
-    },
-    {
-      "type": "follow-on-shop"
-    },
-    {
-      "type": "group"
-    },
-    {
-      "type": "icon"
-    },
-    {
-      "type": "image"
-    },
-    {
-      "type": "menu"
-    },
-    {
-      "type": "payment-icons"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "logo"
-    },
-    {
-      "type": "jumbo-text"
-    },
-    {
-      "type": "social-links"
-    },
-    {
-      "type": "email-signup"
-    }
-  ],
+  "name": "Footer",
+  "tag": "section",
+  "class": "section-footer",
   "enabled_on": {
     "groups": ["footer"]
   },
   "settings": [
     {
-      "type": "select",
-      "id": "section_width",
-      "label": "t:settings.width",
-      "options": [
-        {
-          "value": "page-width",
-          "label": "t:options.page"
-        },
-        {
-          "value": "full-width",
-          "label": "t:options.full"
-        }
-      ],
-      "default": "page-width"
+      "type": "text",
+      "id": "brand_name",
+      "label": "Brand Name",
+      "default": "PERFUMORA"
     },
     {
-      "type": "range",
-      "id": "gap",
-      "label": "t:settings.gap",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
+      "type": "richtext",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "<p>One sculpted vessel. Four expressions.<br>Endlessly refillable.</p>"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:settings.background_color",
-      "default": "{{ settings.color_palette.foreground }}"
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu"
     },
     {
-      "type": "header",
-      "content": "t:content.padding"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 20
+      "type": "text",
+      "id": "subtext",
+      "label": "Bottom Subtext",
+      "default": "SOUND CAN BE MUTED FROM THE HEADER"
     }
   ],
   "presets": [
     {
-      "name": "t:names.footer",
-      "category": "t:categories.footer",
-      "settings": {
-        "gap": 20,
-        "padding-block-start": 36,
-        "padding-block-end": 36
-      },
-      "blocks": {
-        "newsletter-group": {
-          "type": "group",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "gap": 6,
-            "width": "fill"
-          },
-          "blocks": {
-            "newsletter-heading": {
-              "type": "text",
-              "settings": {
-                "text": "t:html_defaults.join_our_email_list",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "h3"
-              }
-            },
-            "newsletter-text": {
-              "type": "text",
-              "settings": {
-                "text": "t:html_defaults.get_exclusive_deals_and_early_access_to_new_products",
-                "width": "100%",
-                "alignment": "left",
-                "type_preset": "rte"
-              }
-            }
-          },
-          "block_order": ["newsletter-heading", "newsletter-text"]
-        },
-        "newsletter-form": {
-          "type": "email-signup",
-          "settings": {
-            "width": "fill"
-          }
-        }
-      },
-      "block_order": ["newsletter-group", "newsletter-form"]
+      "name": "Footer"
     }
   ]
 }
