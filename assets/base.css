@@ -20,8 +20,8 @@ body {
 
 html {
   /* Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) var(--color-background);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   scroll-behavior: smooth;
 }
 
@@ -57,8 +57,8 @@ html[scroll-lock] {
     height: 100dvh;
     overflow-y: auto;
     scroll-behavior: smooth;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(var(--color-foreground-rgb) / var(--opacity-40)) var(--color-background);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   .page-wrapper--drawer-open shopify-account::part(dialog) {
@@ -1802,27 +1802,11 @@ slideshow-component:focus-within > slideshow-container[animate-arrows] > slidesh
   flex-basis: var(--size-style-height);
 }
 
-/* Global scrollbar styles */
-
-/* Webkit browsers */
+/* Global scrollbar styles - hidden across browsers per luxury design spec */
 ::-webkit-scrollbar {
-  width: 20px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: rgb(var(--color-foreground-rgb) / var(--opacity-40));
-  border-radius: 20px;
-  border: 6px solid transparent;
-  background-clip: content-box;
-  transition: background-color 0.2s;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(var(--color-foreground-rgb) / var(--opacity-60));
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 /* Prevent iOS zoom on input focus by ensuring minimum 16px font size on mobile */

@@ -1,4 +1,20 @@
 {% style %}
+  @font-face {
+    font-family: 'Khand';
+    src: url('{{ "Khand-Variable.woff2" | asset_url }}') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'Switzer';
+    src: url('{{ "Switzer-Variable.woff2" | asset_url }}') format('woff2');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
   {%- liquid
     assign rendered_fonts = ''
 
@@ -160,18 +176,59 @@
     --letter-spacing-sm: 0.06em;
 
     /* Font families */
-    --font-body--family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-    --font-body--style: {{ settings.type_body_font.style }};
-    --font-body--weight: {{ settings.type_body_font.weight }};
-    --font-subheading--family: {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
-    --font-subheading--style: {{ settings.type_subheading_font.style }};
-    --font-subheading--weight: {{ settings.type_subheading_font.weight }};
-    --font-heading--family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
-    --font-heading--style: {{ settings.type_heading_font.style }};
-    --font-heading--weight: {{ settings.type_heading_font.weight }};
-    --font-accent--family: {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
-    --font-accent--style: {{ settings.type_accent_font.style }};
-    --font-accent--weight: {{ settings.type_accent_font.weight }};
+    --font-body--family: 'Switzer', {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-body--style: normal;
+    --font-body--weight: 400;
+    --font-subheading--family: 'Switzer', {{ settings.type_subheading_font.family }}, {{ settings.type_subheading_font.fallback_families }};
+    --font-subheading--style: normal;
+    --font-subheading--weight: 500;
+    --font-heading--family: 'Khand', {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    --font-heading--style: normal;
+    --font-heading--weight: 600;
+    --font-accent--family: 'Khand', {{ settings.type_accent_font.family }}, {{ settings.type_accent_font.fallback_families }};
+    --font-accent--style: normal;
+    --font-accent--weight: 600;
+
+    /* Perfumora Design System Tokens */
+    --surface: #d8d2c8;
+    --surface-rgb: 216, 210, 200;
+    --surface-raised: #e5e0d7;
+    --surface-sunken: #b8b1a6;
+    --bg-dark: #0b0b0c;
+    --bg-dark-rgb: 11, 11, 12;
+    --paper: #faf8f5;
+    --paper-rgb: 250, 248, 245;
+    --ink: #1a1816;
+    --ink-rgb: 26, 24, 22;
+    --foreground-muted: rgba(26, 24, 22, 0.68);
+    --foreground-subtle: rgba(26, 24, 22, 0.44);
+    --border: rgba(26, 24, 22, 0.14);
+    --hairline-on-dark: rgba(250, 248, 245, 0.14);
+    --backdrop: rgba(30, 27, 24, 0.45);
+    --primary: #9e5b22;
+    --accent: #9e5b22;
+    --primary-hover: #884d1c;
+    --primary-glow: rgba(158, 91, 34, 0.28);
+
+    /* Radii */
+    --radius-card: 1.75rem;
+    --radius-modal: 1.75rem;
+    --radius-pill: 9999px;
+
+    /* Shadows */
+    --shadow-product-card: 0 18px 44px -26px rgba(0, 0, 0, 0.85);
+    --shadow-drawer: -12px 0 36px -12px rgba(0, 0, 0, 0.35);
+
+    /* Fluid Display Scales */
+    --font-display-h1--size: clamp(3rem, 10vw, 9rem);
+    --font-display-h1--line-height: 0.9;
+    --font-display-h1--letter-spacing: -0.03em;
+    --font-section-h2--size: clamp(2rem, 5vw, 4rem);
+    --font-section-h2--line-height: 1.0;
+    --font-section-h2--letter-spacing: -0.02em;
+    --font-price--size: clamp(2rem, 4vw, 3.25rem);
+    --font-price--line-height: 1.0;
+    --font-price--letter-spacing: -0.02em;
 
     /* Margin sizes */
     --font-heading--spacing: 0.25em;
