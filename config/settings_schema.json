@@ -1920,7 +1920,7 @@
         "type": "range",
         "id": "card_corner_radius",
         "min": 0,
-        "max": 32,
+        "max": 16,
         "step": 1,
         "unit": "px",
         "label": "t:settings.card_corner_radius",

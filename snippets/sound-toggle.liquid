@@ -1,0 +1,110 @@
+{% doc %}
+  Renders the global audio mute toggle with a 7-bar animated waveform icon.
+  Persists state in localStorage and coordinates with Web Audio cues.
+{% enddoc %}
+
+<script
+  type="module"
+  src="{{ 'sound-toggle.js' | asset_url }}"
+  fetchpriority="low"
+></script>
+
+<sound-toggle
+  class="sound-toggle"
+  data-mist-url="{{ 'mist.wav' | asset_url }}"
+  data-click-url="{{ 'click.mp3' | asset_url }}"
+>
+  <button
+    type="button"
+    class="sound-toggle__button button-unstyled"
+    aria-label="Toggle interaction sounds"
+    aria-pressed="true"
+  >
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+      class="sound-toggle__svg"
+    >
+      <rect class="wave-bar bar-1" x="2.1" y="8.5" width="1.8" height="7" rx="0.9" />
+      <rect class="wave-bar bar-2" x="5.1" y="7.0" width="1.8" height="10" rx="0.9" />
+      <rect class="wave-bar bar-3" x="8.1" y="5.5" width="1.8" height="13" rx="0.9" />
+      <rect class="wave-bar bar-4" x="11.1" y="4.5" width="1.8" height="15" rx="0.9" />
+      <rect class="wave-bar bar-5" x="14.1" y="5.5" width="1.8" height="13" rx="0.9" />
+      <rect class="wave-bar bar-6" x="17.1" y="7.0" width="1.8" height="10" rx="0.9" />
+      <rect class="wave-bar bar-7" x="20.1" y="8.5" width="1.8" height="7" rx="0.9" />
+    </svg>
+  </button>
+</sound-toggle>
+
+{% stylesheet %}
+  .sound-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sound-toggle__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.22);
+    color: var(--color-foreground);
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--hover-transition-duration, 0.25s) ease;
+
+    &:hover {
+      border-color: var(--color-foreground);
+      background-color: rgb(var(--color-foreground-rgb) / 0.05);
+    }
+  }
+
+  .sound-toggle__svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .sound-toggle .wave-bar {
+    transform-origin: center center;
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+                opacity 0.25s ease;
+  }
+
+  .sound-toggle[data-muted='true'] .wave-bar {
+    transform: scaleY(0.18);
+    opacity: 0.35;
+  }
+
+  .sound-toggle[data-muted='false'] .wave-bar {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  .sound-toggle.is-playing .wave-bar {
+    animation: sound-bar-dance 0.4s ease-in-out infinite alternate;
+  }
+
+  .sound-toggle.is-playing .bar-1 { animation-delay: 0s; }
+  .sound-toggle.is-playing .bar-2 { animation-delay: 0.08s; }
+  .sound-toggle.is-playing .bar-3 { animation-delay: 0.16s; }
+  .sound-toggle.is-playing .bar-4 { animation-delay: 0.05s; }
+  .sound-toggle.is-playing .bar-5 { animation-delay: 0.13s; }
+  .sound-toggle.is-playing .bar-6 { animation-delay: 0.02s; }
+  .sound-toggle.is-playing .bar-7 { animation-delay: 0.1s; }
+
+  @keyframes sound-bar-dance {
+    0% { transform: scaleY(0.4); }
+    100% { transform: scaleY(1.15); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sound-toggle.is-playing .wave-bar {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
