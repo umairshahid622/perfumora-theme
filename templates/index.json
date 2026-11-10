@@ -12,15 +12,6 @@
       "type": "opening-hero",
       "settings": {}
     },
-    "manifesto_section": {
-      "type": "manifesto",
-      "settings": {
-        "eyebrow": "Manifesto",
-        "heading": "Made to last.",
-        "paragraph_1": "A good fragrance is the easiest way to feel confident and put together. It's the final detail you put on before heading out, and the one people remember most.",
-        "paragraph_2": "We focus on quality ingredients and long-lasting formulas made for everyday wear — simple, clean, and designed to stay with you from morning to night."
-      }
-    },
     "ritual_section": {
       "type": "ritual",
       "blocks": {
@@ -267,7 +258,6 @@
   },
   "order": [
     "opening_hero",
-    "manifesto_section",
     "ritual_section",
     "product_list_fa6P9H",
     "cta_section",

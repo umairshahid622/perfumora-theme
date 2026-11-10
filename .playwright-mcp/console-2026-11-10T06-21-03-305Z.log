@@ -1,0 +1,7 @@
+[    1460ms] [INFO] [HotReload] Connected @ http://127.0.0.1:9292/cdn/shopifycloud/theme-hot-reload/theme-hot-reload.js:300
+[    1543ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ :3642
+[    1838ms] [ERROR] Failed to load resource: the server responded with a status of 400 () @ https://perfumora-n06thvn0.myshopify.com/api/2026-01/graphql.json:1
+[    1839ms] [ERROR] [shopify-account] Menu "customer-account-main-menu" not found in Storefront API. Falling back to default menu items. @ https://cdn.shopify.com/storefront/web-components/account.js:1
+[    2024ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ https://cdn.shopify.com/shopifycloud/shop-js/modules/v2/chunk.colors_CaG6LKvC.esm.js:1
+[    2035ms] [VERBOSE] Rendering was performed in a subtree hidden by content-visibility. @ https://cdn.shopify.com/shopifycloud/shop-js/modules/v2/chunk.ShopLogin_C0QE4DUe.esm.js:1
+[    2924ms] [ERROR] Failed to load resource: the server responded with a status of 403 () @ https://shop.app/accounts/pre_auth?client_id=4f4517ac-38c5-4507-b8d2-46f0865e8766&analytics_trace_id=fbed6991-2884-4f23-8301-6d35d86099f2&flow=embed&flow_version=account_menu&target_origin=http%3A%2F%2F127.0.0.1%3A9292&storefront_domain=https%3A%2F%2Fperfumora-n06thvn0.myshopify.com&scope=openid+email%3Averified+pay%3Asession_token+profile+shop%3Aaccount_uuid&locale=en:1

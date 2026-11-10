@@ -1,12 +1,10 @@
 {% comment %}
-  Section contract: Opening Hero Stage
-  Renders the interactive Perfumora hero stage matching the haute-parfumerie reference:
-  - Oversized condensed watermark typography
-  - Ambient accent radial glow behind the center bottle area
-  - Left / right carousel circle navigation arrows
-  - Centered slide position counter (01 / 05)
-  - Bottom persistent product bar with subtitle, large price, size pills, and Add to Bag
-  - Middle bottle mount container reserved for the 3D bottle
+  Section contract: Opening Stage (Hero & Manifesto)
+  Renders the interactive Perfumora opening stage matching the haute-parfumerie reference:
+  - Beat 1 (Hero): Oversized watermark, ambient radial glow, navigation arrows, slide counter, centered bottle
+  - Beat 2 (Manifesto): Scrollytelling transition where watermark/arrows fade, Manifesto copy slides in flush-left, bottle drifts 34vw to the right
+  - Live across both beats: Persistent ambient glow and bottom product bar (subtitle, large price, size pills, Add to Bag)
+  - Center slot reserved for the 3D bottle in Step 8
 {% endcomment %}
 
 <script
@@ -113,6 +111,10 @@
   id="hero-stage"
   style="--hero-accent: {{ initial_accent }}; --hero-accent-glow: {{ initial_accent }}36;"
 >
+  <!-- In-page anchor targets -->
+  <div class="hero-stage__anchor" id="hero"></div>
+  <div class="hero-stage__anchor hero-stage__anchor--manifesto" id="manifesto"></div>
+
   <script type="application/json" class="hero-stage__data">
     [
       {% if fragrance_handles.size > 0 %}
@@ -186,128 +188,175 @@
     ]
   </script>
 
-  <!-- Ambient Accent Radial Glow -->
-  <div class="hero-stage__glow" aria-hidden="true"></div>
+  <!-- Persistent Sticky Viewport across Hero and Manifesto beats -->
+  <div class="hero-stage__sticky" ref="stickyViewport">
+    <!-- Layer 1: Ambient Accent Radial Glow -->
+    <div class="hero-stage__glow" aria-hidden="true"></div>
 
-  <!-- Oversized Watermark Fragrance Name -->
-  <div class="hero-stage__watermark-wrap" aria-hidden="true">
-    <span class="hero-stage__watermark" ref="watermark">
-      {{ first_product.title | default: 'BOOM SHELL' }}
-    </span>
-  </div>
-
-  <!-- Left / Right Carousel Navigation Arrows -->
-  <button
-    type="button"
-    class="hero-stage__arrow hero-stage__arrow--prev"
-    aria-label="Previous fragrance"
-    ref="prevButton"
-  >
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M19 12H5M12 19l-7-7 7-7"/>
-    </svg>
-  </button>
-  <button
-    type="button"
-    class="hero-stage__arrow hero-stage__arrow--next"
-    aria-label="Next fragrance"
-    ref="nextButton"
-  >
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M5 12h14M12 5l7 7-7 7"/>
-    </svg>
-  </button>
-
-  <!-- Middle Center Stage: Reserved bottle mount slot & slide counter -->
-  <div class="hero-stage__center">
-    <div class="hero-stage__bottle-mount" id="hero-bottle-mount">
-      <!-- 3D bottle will be mounted here in Step 8 -->
-    </div>
-
-    <!-- Slide Position Counter -->
-    <div class="hero-stage__counter" ref="counter">
-      <span class="hero-stage__counter-current" ref="counterCurrent">01</span>
-      <span class="hero-stage__counter-sep">/</span>
-      <span class="hero-stage__counter-total" ref="counterTotal">
-        {% if total_count < 10 %}0{% endif %}{{ total_count }}
+    <!-- Layer 2: Oversized Watermark Fragrance Name (Hero Beat) -->
+    <div class="hero-stage__watermark-wrap" ref="watermarkWrap" aria-hidden="true">
+      <span class="hero-stage__watermark" ref="watermark">
+        {{ first_product.title | default: 'BOOM SHELL' }}
       </span>
     </div>
-  </div>
 
-  <!-- Bottom Persistent Product Bar -->
-  <div class="hero-stage__product-bar">
-    <!-- Left: Subtitle & Large Price -->
-    <div class="hero-stage__info">
-      <div class="hero-stage__subtitle" ref="subtitle">
-        {{ first_product.title | default: 'BOOM SHELL' | upcase }} · {{ gender | upcase }} · {{ concentration | upcase }}
-      </div>
-      <div class="hero-stage__price" ref="price">
-        {{ initial_variant.price | default: 410000 | money_without_trailing_zeros | replace: 'Rs.', 'Rs. ' | replace: 'Rs.  ', 'Rs. ' }}
+    <!-- Layer 3: Left / Right Carousel Navigation Arrows (Hero Beat) -->
+    <button
+      type="button"
+      class="hero-stage__arrow hero-stage__arrow--prev"
+      aria-label="Previous fragrance"
+      ref="prevButton"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+    </button>
+    <button
+      type="button"
+      class="hero-stage__arrow hero-stage__arrow--next"
+      aria-label="Next fragrance"
+      ref="nextButton"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </button>
+
+    <!-- Layer 4: Manifesto Beat Overlay (Left Column flush to page) -->
+    <div class="hero-stage__manifesto-panel" ref="manifestoPanel" aria-hidden="true">
+      <div class="hero-stage__manifesto-content">
+        <span class="hero-stage__manifesto-eyebrow">
+          {{ section.settings.manifesto_eyebrow | default: 'MANIFESTO' }}
+        </span>
+        <h2 class="hero-stage__manifesto-heading">
+          {{ section.settings.manifesto_heading | default: 'MADE TO LAST.' }}
+        </h2>
+        <div class="hero-stage__manifesto-divider" aria-hidden="true"></div>
+        <div class="hero-stage__manifesto-body">
+          <p>{{ section.settings.manifesto_paragraph_1 | default: "A good fragrance is the easiest way to feel confident and put together. It's the final detail you put on before heading out, and the one people remember most." }}</p>
+          <p>{{ section.settings.manifesto_paragraph_2 | default: "We focus on quality ingredients and long-lasting formulas made for everyday wear — simple, clean, and designed to stay with you from morning to night." }}</p>
+        </div>
       </div>
     </div>
 
-    <!-- Center: Size Selector Pills -->
-    <div class="hero-stage__sizes" ref="sizes" role="radiogroup" aria-label="Select size">
-      {% if first_product.variants.size > 0 %}
-        {% for v in first_product.variants %}
-          {% assign is_active = false %}
-          {% if v.id == initial_variant.id %}
-            {% assign is_active = true %}
-          {% endif %}
-          <button
-            type="button"
-            role="radio"
-            class="hero-stage__size-btn{% if is_active %} is-active{% endif %}"
-            aria-checked="{% if is_active %}true{% else %}false{% endif %}"
-            data-variant-id="{{ v.id }}"
-            {% unless v.available %}disabled{% endunless %}
-          >
-            {{ v.title | upcase }}
-          </button>
-        {% endfor %}
-      {% else %}
-        <button type="button" role="radio" class="hero-stage__size-btn" aria-checked="false">30ML</button>
-        <button type="button" role="radio" class="hero-stage__size-btn is-active" aria-checked="true">50ML</button>
-      {% endif %}
+    <!-- Layer 5: Center / Drifting Stage: Bottle Mount & Position Counter -->
+    <div class="hero-stage__center">
+      <div class="hero-stage__bottle-mount-wrap" ref="bottleMountWrap">
+        <div class="hero-stage__bottle-mount" id="hero-bottle-mount">
+          <!-- 3D bottle mounted here in Step 8 -->
+        </div>
+      </div>
+
+      <!-- Slide Position Counter (Hero Beat) -->
+      <div class="hero-stage__counter" ref="counter">
+        <span class="hero-stage__counter-current" ref="counterCurrent">01</span>
+        <span class="hero-stage__counter-sep">/</span>
+        <span class="hero-stage__counter-total" ref="counterTotal">
+          {% if total_count < 10 %}0{% endif %}{{ total_count }}
+        </span>
+      </div>
     </div>
 
-    <!-- Right: Add to Bag Button -->
-    <div class="hero-stage__actions">
-      <button
-        type="button"
-        class="hero-stage__add-btn"
-        ref="addButton"
-        data-variant-id="{{ initial_variant.id | default: 102 }}"
-        {% if initial_variant and initial_variant.available == false %}disabled{% endif %}
-      >
-        {% if initial_variant == null or initial_variant.available %}
-          Add to Bag
+    <!-- Layer 6: Persistent Bottom Product Bar (Live across all beats) -->
+    <div class="hero-stage__product-bar" ref="productBar">
+      <!-- Left: Subtitle & Large Price -->
+      <div class="hero-stage__info">
+        <div class="hero-stage__subtitle" ref="subtitle">
+          {{ first_product.title | default: 'BOOM SHELL' | upcase }} · {{ gender | upcase }} · {{ concentration | upcase }}
+        </div>
+        <div class="hero-stage__price" ref="price">
+          {{ initial_variant.price | default: 410000 | money_without_trailing_zeros | replace: 'Rs.', 'Rs. ' | replace: 'Rs.  ', 'Rs. ' }}
+        </div>
+      </div>
+
+      <!-- Center: Size Selector Pills -->
+      <div class="hero-stage__sizes" ref="sizes" role="radiogroup" aria-label="Select size">
+        {% if first_product.variants.size > 0 %}
+          {% for v in first_product.variants %}
+            {% assign is_active = false %}
+            {% if v.id == initial_variant.id %}
+              {% assign is_active = true %}
+            {% endif %}
+            <button
+              type="button"
+              role="radio"
+              class="hero-stage__size-btn{% if is_active %} is-active{% endif %}"
+              aria-checked="{% if is_active %}true{% else %}false{% endif %}"
+              data-variant-id="{{ v.id }}"
+              {% unless v.available %}disabled{% endunless %}
+            >
+              {{ v.title | upcase }}
+            </button>
+          {% endfor %}
         {% else %}
-          Sold Out
+          <button type="button" role="radio" class="hero-stage__size-btn" aria-checked="false">30ML</button>
+          <button type="button" role="radio" class="hero-stage__size-btn is-active" aria-checked="true">50ML</button>
         {% endif %}
-      </button>
+      </div>
+
+      <!-- Right: Add to Bag Button -->
+      <div class="hero-stage__actions">
+        <button
+          type="button"
+          class="hero-stage__add-btn"
+          ref="addButton"
+          data-variant-id="{{ initial_variant.id | default: 102 }}"
+          {% if initial_variant and initial_variant.available == false %}disabled{% endif %}
+        >
+          {% if initial_variant == null or initial_variant.available %}
+            Add to Bag
+          {% else %}
+            Sold Out
+          {% endif %}
+        </button>
+      </div>
     </div>
   </div>
 </hero-stage>
 
 {% stylesheet %}
+  hero-stage,
   .hero-stage {
+    display: block;
     position: relative;
     width: 100%;
-    min-height: calc(100vh - 75px);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
+    height: 220vh; /* Scrollytelling track for Hero (0-100vh) -> Manifesto (100-220vh) */
     background-color: var(--color-background, #c9c2b8);
     box-sizing: border-box;
   }
 
-  @media (min-width: 900px) {
+  .hero-stage__anchor {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  .hero-stage__anchor--manifesto {
+    top: 85vh;
+  }
+
+  .hero-stage__sticky {
+    position: sticky;
+    top: var(--header-height, 0px);
+    width: 100%;
+    height: calc(100vh - var(--header-height, 0px));
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 749px) {
     .hero-stage {
-      height: calc(100vh - 75px);
-      min-height: 600px;
-      max-height: 960px;
+      height: 180vh;
+    }
+    .hero-stage__sticky {
+      min-height: 540px;
     }
   }
 
@@ -331,6 +380,8 @@
     z-index: 1;
     overflow: hidden;
     padding-inline: 24px;
+    will-change: opacity, transform;
+    transition: opacity 0.2s ease-out;
   }
 
   .hero-stage__watermark {
@@ -363,6 +414,7 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
   }
 
   .hero-stage__arrow:hover {
@@ -393,6 +445,87 @@
     }
   }
 
+  /* Manifesto Beat Overlay */
+  .hero-stage__manifesto-panel {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    bottom: 90px;
+    display: flex;
+    align-items: center;
+    max-width: var(--page-width, 1340px);
+    margin-inline: auto;
+    padding-inline: 48px;
+    pointer-events: none;
+    z-index: 6;
+    opacity: 0;
+    transform: translateX(-50px);
+    will-change: opacity, transform;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .hero-stage__manifesto-content {
+    max-width: min(460px, 38vw);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-stage__manifesto-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(26, 24, 22, 0.6);
+    margin-bottom: 16px;
+  }
+
+  .hero-stage__manifesto-heading {
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-foreground, #1a1816);
+    margin: 0;
+  }
+
+  .hero-stage__manifesto-divider {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(26, 24, 22, 0.15);
+    margin-block: 24px 24px;
+  }
+
+  .hero-stage__manifesto-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .hero-stage__manifesto-body p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(26, 24, 22, 0.78);
+    margin: 0;
+  }
+
+  @media (max-width: 890px) {
+    .hero-stage__manifesto-panel {
+      padding-inline: 24px;
+      bottom: 140px;
+      align-items: flex-start;
+      padding-top: 60px;
+    }
+    .hero-stage__manifesto-content {
+      max-width: 100%;
+    }
+    .hero-stage__manifesto-body p {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+  }
+
   .hero-stage__center {
     position: relative;
     z-index: 3;
@@ -402,6 +535,17 @@
     justify-content: center;
     flex-grow: 1;
     padding-top: 16px;
+    pointer-events: none;
+  }
+
+  .hero-stage__bottle-mount-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform;
+    transition: transform 0.15s ease-out;
+    pointer-events: auto;
   }
 
   .hero-stage__bottle-mount {
@@ -429,6 +573,8 @@
     user-select: none;
     margin-top: 10px;
     z-index: 5;
+    will-change: opacity;
+    transition: opacity 0.2s ease-out;
   }
 
   .hero-stage__counter-current {
@@ -466,6 +612,7 @@
     align-items: flex-end;
     gap: 24px;
     box-sizing: border-box;
+    pointer-events: auto;
   }
 
   @media (max-width: 890px) {
@@ -598,6 +745,34 @@
       "type": "collection",
       "id": "collection",
       "label": "Fragrance Collection"
+    },
+    {
+      "type": "header",
+      "content": "Manifesto Beat"
+    },
+    {
+      "type": "text",
+      "id": "manifesto_eyebrow",
+      "label": "Manifesto Eyebrow",
+      "default": "MANIFESTO"
+    },
+    {
+      "type": "text",
+      "id": "manifesto_heading",
+      "label": "Manifesto Heading",
+      "default": "MADE TO LAST."
+    },
+    {
+      "type": "textarea",
+      "id": "manifesto_paragraph_1",
+      "label": "Manifesto Paragraph 1",
+      "default": "A good fragrance is the easiest way to feel confident and put together. It's the final detail you put on before heading out, and the one people remember most."
+    },
+    {
+      "type": "textarea",
+      "id": "manifesto_paragraph_2",
+      "label": "Manifesto Paragraph 2",
+      "default": "We focus on quality ingredients and long-lasting formulas made for everyday wear — simple, clean, and designed to stay with you from morning to night."
     }
   ],
   "presets": [

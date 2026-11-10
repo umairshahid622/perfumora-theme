@@ -1,7 +1,8 @@
 /**
  * Perfumora Hero Stage Custom Element
  * Coordinates fragrance carousel state, watermark transitions, price & size updates,
- * keyboard navigation, and cart additions. Leaves the center slot ready for the 3D bottle mount.
+ * keyboard navigation, and scrollytelling transition between Hero (Beat 1) and Manifesto (Beat 2).
+ * Leaves the center/drifting slot ready for the 3D bottle mount in Step 8.
  */
 
 function relativeLuminance(hex) {
@@ -58,6 +59,7 @@ export class HeroStage extends HTMLElement {
   #products = [];
   #currentIndex = 0;
   #selectedSize = '50';
+  #scrollTicking = false;
 
   connectedCallback() {
     this.#loadData();
@@ -65,6 +67,7 @@ export class HeroStage extends HTMLElement {
 
     this.#bindElements();
     this.#setupEvents();
+    this.#setupScroll();
     this.#render(0);
   }
 
@@ -80,15 +83,20 @@ export class HeroStage extends HTMLElement {
   }
 
   #bindElements() {
+    this.watermarkWrap = this.querySelector('[ref="watermarkWrap"]');
     this.watermark = this.querySelector('[ref="watermark"]');
     this.prevBtn = this.querySelector('[ref="prevButton"]');
     this.nextBtn = this.querySelector('[ref="nextButton"]');
+    this.manifestoPanel = this.querySelector('[ref="manifestoPanel"]');
+    this.bottleMountWrap = this.querySelector('[ref="bottleMountWrap"]');
+    this.counter = this.querySelector('[ref="counter"]');
     this.counterCurrent = this.querySelector('[ref="counterCurrent"]');
     this.counterTotal = this.querySelector('[ref="counterTotal"]');
     this.subtitle = this.querySelector('[ref="subtitle"]');
     this.priceEl = this.querySelector('[ref="price"]');
     this.sizesEl = this.querySelector('[ref="sizes"]');
     this.addBtn = this.querySelector('[ref="addButton"]');
+    this.productBar = this.querySelector('[ref="productBar"]');
   }
 
   #setupEvents() {
@@ -160,6 +168,114 @@ export class HeroStage extends HTMLElement {
         this.addBtn.classList.remove('is-loading');
       }
     });
+  }
+
+  #setupScroll() {
+    const onScroll = () => {
+      if (!this.#scrollTicking) {
+        requestAnimationFrame(() => {
+          this.#handleScroll();
+          this.#scrollTicking = false;
+        });
+        this.#scrollTicking = true;
+      }
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true, capture: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    
+    // Also attach directly to .page-wrapper when present
+    const pageWrapper = document.querySelector('.page-wrapper');
+    if (pageWrapper) {
+      pageWrapper.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    // Initial evaluation
+    this.#handleScroll();
+  }
+
+  #handleScroll() {
+    const pageWrapper = document.querySelector('.page-wrapper');
+    const scrollContainer = pageWrapper && window.innerWidth >= 990 ? pageWrapper : null;
+    
+    const windowH = scrollContainer ? scrollContainer.clientHeight : window.innerHeight;
+    const stageH = this.offsetHeight;
+    const scrollDist = stageH - windowH;
+
+    if (scrollDist <= 0) return;
+
+    let currentScroll = 0;
+    if (scrollContainer) {
+      currentScroll = scrollContainer.scrollTop;
+    } else {
+      const rect = this.getBoundingClientRect();
+      currentScroll = -rect.top;
+    }
+
+    const rawProgress = currentScroll / scrollDist;
+    const progress = Math.max(0, Math.min(1, rawProgress));
+
+    const isMobile = window.innerWidth <= 767;
+
+    // Phase 1 (0.00 -> 0.12): Pure Hero
+    // Phase 2 (0.12 -> 0.45): Dissolve Hero to Manifesto & Drift Bottle right
+    // Phase 3 (0.45 -> 1.00): Manifesto Hold
+    let heroPresence = 1;
+    let manifestoPresence = 0;
+    let bottleProgress = 0;
+
+    if (progress < 0.08) {
+      heroPresence = 1;
+      manifestoPresence = 0;
+      bottleProgress = 0;
+    } else if (progress > 0.42) {
+      heroPresence = 0;
+      manifestoPresence = 1;
+      bottleProgress = 1;
+    } else {
+      const t = (progress - 0.08) / 0.34;
+      // Smooth cubic bezier ease-in-out
+      const easeT = t * t * (3 - 2 * t);
+      heroPresence = 1 - easeT;
+      manifestoPresence = easeT;
+      bottleProgress = easeT;
+    }
+
+    // 1. Watermark, Navigation Arrows, Counter Fade
+    if (this.watermarkWrap) {
+      this.watermarkWrap.style.opacity = heroPresence.toFixed(3);
+    }
+    if (this.prevBtn) {
+      this.prevBtn.style.opacity = heroPresence.toFixed(3);
+      this.prevBtn.style.pointerEvents = heroPresence > 0.3 ? 'auto' : 'none';
+    }
+    if (this.nextBtn) {
+      this.nextBtn.style.opacity = heroPresence.toFixed(3);
+      this.nextBtn.style.pointerEvents = heroPresence > 0.3 ? 'auto' : 'none';
+    }
+    if (this.counter) {
+      this.counter.style.opacity = heroPresence.toFixed(3);
+    }
+
+    // 2. Manifesto Panel Entry
+    if (this.manifestoPanel) {
+      this.manifestoPanel.style.opacity = manifestoPresence.toFixed(3);
+      const slideX = (1 - manifestoPresence) * -50;
+      this.manifestoPanel.style.transform = `translateX(${slideX.toFixed(1)}px)`;
+      this.manifestoPanel.style.pointerEvents = manifestoPresence > 0.5 ? 'auto' : 'none';
+      this.manifestoPanel.setAttribute('aria-hidden', manifestoPresence < 0.3 ? 'true' : 'false');
+    }
+
+    // 3. Bottle Drift (0 -> 34vw on desktop, 0 -> -16vh on mobile)
+    if (this.bottleMountWrap) {
+      if (isMobile) {
+        const bottleY = bottleProgress * -16;
+        this.bottleMountWrap.style.transform = `translate3d(0, ${bottleY.toFixed(1)}vh, 0)`;
+      } else {
+        const bottleX = bottleProgress * 34;
+        this.bottleMountWrap.style.transform = `translate3d(${bottleX.toFixed(2)}vw, 0, 0)`;
+      }
+    }
   }
 
   goTo(index) {

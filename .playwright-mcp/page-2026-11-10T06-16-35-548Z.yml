@@ -1,0 +1,169 @@
+- generic [active] [ref=e1]:
+  - link "Skip to content" [ref=e2] [cursor=pointer]:
+    - /url: "#MainContent"
+  - generic [ref=e3]:
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - heading "perfumora" [level=1] [ref=e8]
+        - generic [ref=e10]:
+          - link "perfumora" [ref=e12] [cursor=pointer]:
+            - /url: /
+          - navigation "Primary" [ref=e17]:
+            - list [ref=e19]:
+              - generic:
+                - listitem [ref=e20]:
+                  - link "Home" [ref=e21] [cursor=pointer]:
+                    - /url: /
+                - listitem [ref=e23]:
+                  - link "Catalog" [ref=e24] [cursor=pointer]:
+                    - /url: /collections/all
+                - listitem [ref=e26]:
+                  - link "Contact" [ref=e27] [cursor=pointer]:
+                    - /url: /pages/contact
+          - generic [ref=e30]:
+            - button "Account" [ref=e35] [cursor=pointer]
+            - button "Cart" [ref=e39] [cursor=pointer]
+            - button "Mute interaction sounds" [pressed] [ref=e44] [cursor=pointer]
+            - status [ref=e53]
+    - main [ref=e54]:
+      - generic [ref=e57]:
+        - generic [aria-hidden]:
+          - generic: Boom Shell
+        - button "Previous fragrance" [ref=e58] [cursor=pointer]
+        - button "Next fragrance" [ref=e61] [cursor=pointer]
+        - generic [aria-hidden]:
+          - generic:
+            - generic: MANIFESTO
+            - heading [level=2]: MADE TO LAST.
+            - generic:
+              - paragraph: A good fragrance is the easiest way to feel confident and put together. It's the final detail you put on before heading out, and the one people remember most.
+              - paragraph: We focus on quality ingredients and long-lasting formulas made for everyday wear — simple, clean, and designed to stay with you from morning to night.
+        - generic:
+          - generic:
+            - generic: "01"
+            - generic: /
+            - generic: "02"
+        - generic [ref=e64]:
+          - generic [ref=e65]:
+            - generic [ref=e66]: BOOM SHELL · FEMALE · EAU DE COLOGNE
+            - generic [ref=e67]: Rs. 4,100
+          - radiogroup "Select size" [ref=e68]:
+            - radio "30ML" [ref=e69] [cursor=pointer]
+            - radio "50ML" [checked] [ref=e70] [cursor=pointer]
+          - button "Add to Bag" [ref=e72] [cursor=pointer]
+      - generic [ref=e74]:
+        - generic [ref=e75]:
+          - generic [ref=e76]: The Ritual
+          - heading "Three moments, one lasting impression" [level=2] [ref=e77]
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]: "01"
+            - heading "Prime" [level=3] [ref=e81]
+            - paragraph [ref=e82]: A single press to warm pulse points — wrist, throat, the nape of the neck.
+          - generic [ref=e83]:
+            - generic [ref=e84]: "02"
+            - heading "Apply" [level=3] [ref=e85]
+            - paragraph [ref=e86]: Hold the vessel a hand's width away and let the mist settle, never rub.
+          - generic [ref=e87]:
+            - generic [ref=e88]: "03"
+            - heading "Layer" [level=3] [ref=e89]
+            - paragraph [ref=e90]: Return through the day as the scent softens; the refill is always close.
+      - generic [ref=e93]:
+        - generic [ref=e97]:
+          - paragraph [ref=e98]: Gallery
+          - heading "The Fragrances" [level=2] [ref=e99]
+        - generic [ref=e100]:
+          - generic [ref=e102]:
+            - link "Boom Shell" [ref=e103] [cursor=pointer]:
+              - /url: /products/boom-shell
+            - generic [ref=e104]:
+              - link "Boom Shell" [ref=e106] [cursor=pointer]:
+                - /url: /products/boom-shell
+                - img "Boom Shell" [ref=e107]
+              - generic [ref=e108]:
+                - generic [ref=e109]: Rs.4,100
+                - heading [level=3] [ref=e111]:
+                  - link "Boom Shell" [ref=e112] [cursor=pointer]:
+                    - /url: /products/boom-shell
+                - generic [ref=e113]: FEMALE · EAU DE COLOGNE
+                - radiogroup "Size" [ref=e114]:
+                  - radio "30ML" [ref=e115] [cursor=pointer]
+                  - radio "50ML" [checked] [ref=e116] [cursor=pointer]
+                - button "Add to Bag" [ref=e117] [cursor=pointer]
+          - generic [ref=e119]:
+            - link "Parada" [ref=e120] [cursor=pointer]:
+              - /url: /products/parada
+            - generic [ref=e121]:
+              - link "Parada" [ref=e123] [cursor=pointer]:
+                - /url: /products/parada
+                - img "Parada" [ref=e124]
+              - generic [ref=e125]:
+                - generic [ref=e126]: Rs.3,600
+                - heading [level=3] [ref=e128]:
+                  - link "Parada" [ref=e129] [cursor=pointer]:
+                    - /url: /products/parada
+                - generic [ref=e130]: UNISEX · EAU DE PARFUM
+                - radiogroup "Size" [ref=e131]:
+                  - radio "30ML" [ref=e132] [cursor=pointer]
+                  - radio "50ML" [checked] [ref=e133] [cursor=pointer]
+                - button "Add to Bag" [ref=e134] [cursor=pointer]
+      - generic [ref=e137]:
+        - generic [ref=e138]: Begin
+        - heading "Find the one that becomes yours" [level=2] [ref=e139]
+        - link "Explore the collection" [ref=e140] [cursor=pointer]:
+          - /url: /collections/all
+      - generic [ref=e143]:
+        - generic [ref=e144]:
+          - generic [ref=e145]: Contact
+          - heading "Speak with the atelier" [level=2] [ref=e146]
+          - paragraph [ref=e147]: Questions on layering, refills, or a bespoke commission — leave a note and we'll respond in kind.
+          - generic [ref=e148]:
+            - link "hello@perfumora.example" [ref=e149] [cursor=pointer]:
+              - /url: mailto:hello@perfumora.example
+            - generic [ref=e150]: By appointment · Pakistan
+        - generic [ref=e152]:
+          - generic [ref=e153]:
+            - generic [ref=e154]: Name
+            - textbox "Name" [ref=e155]:
+              - /placeholder: Your name
+          - generic [ref=e156]:
+            - generic [ref=e157]: Email
+            - textbox "Email" [ref=e158]:
+              - /placeholder: you@domain.com
+          - generic [ref=e159]:
+            - generic [ref=e160]: Message
+            - textbox "Message" [ref=e161]:
+              - /placeholder: Tell us what you are looking for...
+          - button "Send message" [ref=e162] [cursor=pointer]
+    - contentinfo [ref=e163]:
+      - generic [ref=e167]:
+        - generic [ref=e169]:
+          - heading "Perfumora" [level=2] [ref=e171]
+          - paragraph [ref=e173]: One sculpted vessel. Four expressions. Endlessly refillable.
+        - group [ref=e175]:
+          - generic "Main menu" [ref=e176]
+          - navigation "Main menu" [ref=e177]:
+            - list [ref=e178]:
+              - listitem [ref=e179]:
+                - link "Home" [ref=e180] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e181]:
+                - link "Catalog" [ref=e182] [cursor=pointer]:
+                  - /url: /collections/all
+              - listitem [ref=e183]:
+                - link "Contact" [ref=e184] [cursor=pointer]:
+                  - /url: /pages/contact
+        - generic [ref=e186]:
+          - heading "The Atelier Gazette" [level=3] [ref=e188]
+          - paragraph [ref=e190]: Quiet dispatches on rare extractions and seasonal blends.
+          - generic [ref=e193]:
+            - generic [ref=e194]: Email
+            - textbox "Email" [ref=e195]:
+              - /placeholder: Email address
+            - button "Sign up" [ref=e196]
+      - generic [ref=e202]:
+        - generic [ref=e204]:
+          - text: © 2026
+          - link "perfumora" [ref=e205] [cursor=pointer]:
+            - /url: /
+        - button "Terms and Policies" [ref=e207] [cursor=pointer]
