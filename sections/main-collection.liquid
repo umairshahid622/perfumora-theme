@@ -46,6 +46,8 @@
     <div
       class="collection-wrapper grid gap-style{% if section.settings.product_grid_width == 'full-width' %} collection-wrapper--grid-full-width{% endif %}"
     >
+      {% render 'category-filter-tabs' %}
+
       {% content_for 'block',
         type: 'filters',
         id: 'filters',
@@ -62,11 +64,15 @@
       {% paginate collection.products by products_per_page %}
         {% capture children %}
           {% for product in collection.products %}
+            {% liquid
+              assign card_gender = product.metafields.perfumora.gender_category.value | default: product.metafields.perfumora.gender_category | default: product.metafields.custom.gender_category.value | default: product.metafields.custom.gender_category | downcase | default: 'unisex'
+            %}
             <li
               id="{{ section.id }}-{{ product.id }}"
               class="product-grid__item product-grid__item--{{ forloop.index0 }}"
               data-page="{{ paginate.current_page }}"
               data-product-id="{{ product.id }}"
+              data-gender="{{ card_gender }}"
               ref="cards[]"
             >
               {% content_for 'block',

@@ -1,0 +1,294 @@
+{% comment %}
+  Section contract: Contact
+  Renders the atelier appointment intro beside the client inquiry form.
+  @example
+  <!-- In templates/index.json: "type": "contact" -->
+{% endcomment %}
+
+<div class="contact-section section section--page-width" id="contact">
+  <div class="contact-grid">
+    <div class="contact-intro">
+      {% if section.settings.eyebrow != blank %}
+        <span class="contact-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="contact-heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.body != blank %}
+        <p class="contact-body">{{ section.settings.body }}</p>
+      {% endif %}
+
+      <div class="contact-details">
+        {% if section.settings.email != blank %}
+          <a href="mailto:{{ section.settings.email }}" class="contact-email">{{ section.settings.email }}</a>
+        {% endif %}
+        {% if section.settings.location != blank %}
+          <span class="contact-location">{{ section.settings.location }}</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="contact-form-wrapper">
+      {% form 'contact', class: 'perfumora-contact-form' %}
+        {% if form.posted_successfully? %}
+          <div class="contact-success" role="status">
+            Thank you for reaching out. The atelier will respond in kind.
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="contact-error" role="alert">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div class="contact-field">
+          <label for="ContactFormName-{{ section.id }}" class="contact-label">Name</label>
+          <input
+            type="text"
+            id="ContactFormName-{{ section.id }}"
+            name="contact[name]"
+            class="contact-input"
+            value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+            placeholder="Your name"
+            required
+          >
+        </div>
+
+        <div class="contact-field">
+          <label for="ContactFormEmail-{{ section.id }}" class="contact-label">Email</label>
+          <input
+            type="email"
+            id="ContactFormEmail-{{ section.id }}"
+            name="contact[email]"
+            class="contact-input"
+            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+            placeholder="you@domain.com"
+            required
+          >
+        </div>
+
+        <div class="contact-field">
+          <label for="ContactFormMessage-{{ section.id }}" class="contact-label">Message</label>
+          <textarea
+            rows="4"
+            id="ContactFormMessage-{{ section.id }}"
+            name="contact[body]"
+            class="contact-textarea"
+            placeholder="Tell us what you are looking for..."
+            required
+          >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+        </div>
+
+        <button type="submit" class="contact-submit-btn">
+          Send message
+        </button>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .contact-section {
+    padding-block: var(--contact-padding-top, 90px) var(--contact-padding-bottom, 110px);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .contact-eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(26, 24, 22, 0.6);
+    margin-bottom: 14px;
+  }
+
+  .contact-heading {
+    font-family: var(--font-heading--family);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-foreground, #1a1816);
+    margin: 0 0 20px;
+  }
+
+  .contact-body {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(26, 24, 22, 0.75);
+    margin: 0 0 32px;
+    max-width: 420px;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.9375rem;
+  }
+
+  .contact-email {
+    color: #1a1816;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-weight: 500;
+  }
+
+  .contact-location {
+    color: rgba(26, 24, 22, 0.6);
+  }
+
+  .perfumora-contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: #eae5dc;
+    border-radius: 28px;
+    padding: 36px 32px;
+    border: 1px solid rgba(26, 24, 22, 0.08);
+    box-shadow: 0 16px 36px -22px rgba(11, 11, 12, 0.22);
+  }
+
+  .contact-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .contact-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(26, 24, 22, 0.7);
+  }
+
+  .contact-input,
+  .contact-textarea {
+    border-radius: 9999px;
+    border: 1px solid rgba(26, 24, 22, 0.2);
+    background-color: #f7f4ef;
+    color: #1a1816;
+    padding: 13px 20px;
+    font-family: var(--font-body--family);
+    font-size: 0.9375rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .contact-textarea {
+    border-radius: 20px;
+    resize: vertical;
+  }
+
+  .contact-input:focus,
+  .contact-textarea:focus {
+    border-color: #1a1816;
+    box-shadow: 0 0 0 2px rgba(26, 24, 22, 0.1);
+  }
+
+  .contact-submit-btn {
+    border-radius: 9999px;
+    border: none;
+    background-color: #1a1816;
+    color: #faf8f5;
+    padding: 14px 28px;
+    font-family: var(--font-body--family);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: all 0.25s ease;
+  }
+
+  .contact-submit-btn:hover {
+    background-color: #000000;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(11, 11, 12, 0.25);
+  }
+
+  .contact-success {
+    padding: 12px 16px;
+    border-radius: 12px;
+    background-color: rgba(79, 121, 66, 0.15);
+    color: #2e5326;
+    font-size: 0.875rem;
+  }
+
+  .contact-error {
+    padding: 12px 16px;
+    border-radius: 12px;
+    background-color: rgba(187, 40, 40, 0.12);
+    color: #8c1d1d;
+    font-size: 0.875rem;
+  }
+
+  @media (max-width: 989px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .perfumora-contact-form {
+      padding: 28px 20px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact Atelier",
+  "tag": "section",
+  "class": "section-contact",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Speak with the atelier"
+    },
+    {
+      "type": "textarea",
+      "id": "body",
+      "label": "Body",
+      "default": "Questions on layering, refills, or a bespoke commission — leave a note and we'll respond in kind."
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email",
+      "default": "hello@perfumora.example"
+    },
+    {
+      "type": "text",
+      "id": "location",
+      "label": "Location",
+      "default": "By appointment · Pakistan"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Atelier"
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,131 @@
+{% comment %}
+  Section contract: Manifesto
+  Renders the Perfumora editorial philosophy beat.
+  @example
+  <!-- In templates/index.json: "type": "manifesto" -->
+{% endcomment %}
+
+<div class="manifesto-section section section--page-width" id="manifesto">
+  <div class="manifesto-content">
+    {% if section.settings.eyebrow != blank %}
+      <span class="manifesto-eyebrow">{{ section.settings.eyebrow }}</span>
+    {% endif %}
+
+    {% if section.settings.heading != blank %}
+      <h2 class="manifesto-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="manifesto-divider" aria-hidden="true"></div>
+
+    <div class="manifesto-body">
+      {% if section.settings.paragraph_1 != blank %}
+        <p>{{ section.settings.paragraph_1 }}</p>
+      {% endif %}
+      {% if section.settings.paragraph_2 != blank %}
+        <p>{{ section.settings.paragraph_2 }}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .manifesto-section {
+    padding-block: var(--manifesto-padding-top, 90px) var(--manifesto-padding-bottom, 90px);
+  }
+
+  .manifesto-content {
+    max-width: 620px;
+    margin-inline-start: 0;
+  }
+
+  .manifesto-eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(26, 24, 22, 0.6);
+    margin-bottom: 16px;
+  }
+
+  .manifesto-heading {
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.5rem, 6vw, 4.25rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-foreground, #1a1816);
+    margin: 0;
+  }
+
+  .manifesto-divider {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(26, 24, 22, 0.15);
+    margin-block: 28px 28px;
+  }
+
+  .manifesto-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .manifesto-body p {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: rgba(26, 24, 22, 0.78);
+    margin: 0;
+  }
+
+  @media (max-width: 749px) {
+    .manifesto-section {
+      padding-block: 50px 50px;
+    }
+    .manifesto-body p {
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Manifesto",
+  "tag": "section",
+  "class": "section-manifesto",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Manifesto"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Made to last."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_1",
+      "label": "Paragraph 1",
+      "default": "A good fragrance is the easiest way to feel confident and put together. It's the final detail you put on before heading out, and the one people remember most."
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_2",
+      "label": "Paragraph 2",
+      "default": "We focus on quality ingredients and long-lasting formulas made for everyday wear — simple, clean, and designed to stay with you from morning to night."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Manifesto"
+    }
+  ]
+}
+{% endschema %}
+

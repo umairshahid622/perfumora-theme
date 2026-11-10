@@ -14,133 +14,125 @@
     "footer_m9NzUG": {
       "type": "footer",
       "blocks": {
-        "group_H6VpwJ": {
+        "brand_group": {
           "type": "group",
           "settings": {
             "content_direction": "column",
             "vertical_on_mobile": true,
             "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 6,
+            "vertical_alignment": "flex-start",
+            "gap": 10,
             "width": "fill",
             "custom_width": 100,
             "width_mobile": "fill",
             "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "open_in_new_tab": false,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "border": "none"
           },
           "blocks": {
-            "text_LWt8Pz": {
+            "brand_title": {
               "type": "text",
               "settings": {
-                "text": "<h2>Join our email list</h2>",
+                "text": "<h2>Perfumora</h2>",
                 "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h4",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "type_preset": "h3"
+              }
             },
-            "text_f9CFLH": {
+            "brand_tagline": {
               "type": "text",
               "settings": {
-                "text": "<p>Get exclusive deals and early access to new products.</p>",
+                "text": "<p>One sculpted vessel. Four expressions. Endlessly refillable.</p>",
                 "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
+                "type_preset": "rte"
+              }
             }
           },
           "block_order": [
-            "text_LWt8Pz",
-            "text_f9CFLH"
+            "brand_title",
+            "brand_tagline"
           ]
         },
-        "email_signup_crihX7": {
-          "type": "email-signup",
+        "footer_menu": {
+          "type": "menu",
           "settings": {
+            "menu": "main-menu",
+            "menu_heading": "Navigation",
+            "heading_preset": "h6",
+            "type_font_primary_link": "body",
+            "type_case_primary_link": "uppercase",
+            "type_font_primary_size": "0.75rem",
+            "alignment": "left"
+          }
+        },
+        "newsletter_group": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-start",
+            "gap": 8,
             "width": "fill",
             "custom_width": 100,
-            "heading_preset": "h3",
-            "border_style": "all",
-            "input_style": "custom",
-            "border_width": 1,
-            "border_radius": 100,
-            "input_background_color": "{{ settings.color_palette.background }}",
-            "input_text_color": "{{ settings.color_palette.color1 }}",
-            "input_border_color": "{{ settings.color_palette.color2 }}",
-            "input_type_preset": "paragraph",
-            "style_class": "button-unstyled",
-            "display_type": "arrow",
-            "label": "Sign up",
-            "integrated_button": true,
-            "button_type_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "border": "none"
           },
-          "blocks": {}
+          "blocks": {
+            "newsletter_title": {
+              "type": "text",
+              "settings": {
+                "text": "<h3>The Atelier Gazette</h3>",
+                "width": "100%",
+                "type_preset": "h4"
+              }
+            },
+            "newsletter_text": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Quiet dispatches on rare extractions and seasonal blends.</p>",
+                "width": "100%",
+                "type_preset": "rte"
+              }
+            },
+            "newsletter_form": {
+              "type": "email-signup",
+              "settings": {
+                "width": "fill",
+                "heading_preset": "h6",
+                "border_style": "all",
+                "input_style": "custom",
+                "border_width": 1,
+                "border_radius": 32,
+                "input_background_color": "#151415",
+                "input_text_color": "#faf8f5",
+                "input_border_color": "rgba(250, 248, 245, 0.2)",
+                "input_type_preset": "paragraph",
+                "style_class": "button-unstyled",
+                "display_type": "arrow",
+                "label": "Subscribe",
+                "integrated_button": true
+              }
+            }
+          },
+          "block_order": [
+            "newsletter_title",
+            "newsletter_text",
+            "newsletter_form"
+          ]
         }
       },
       "block_order": [
-        "group_H6VpwJ",
-        "email_signup_crihX7"
+        "brand_group",
+        "footer_menu",
+        "newsletter_group"
       ],
       "name": "t:names.footer",
       "settings": {
         "section_width": "page-width",
-        "gap": 20,
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 30,
-        "padding-block-end": 30
+        "gap": 32,
+        "background_color": "#0b0b0c",
+        "padding-block-start": 64,
+        "padding-block-end": 48
       }
     },
     "footer_utilities_jLGE8U": {
@@ -149,46 +141,33 @@
         "footer_copyright_jweRK8": {
           "type": "footer-copyright",
           "settings": {
-            "show_powered_by": true,
+            "show_powered_by": false,
             "font_size": "0.75rem",
-            "case": "none"
-          },
-          "blocks": {}
+            "case": "uppercase",
+            "text_color": "rgba(250, 248, 245, 0.55)"
+          }
         },
         "footer_policy_list_VCdnpa": {
           "type": "footer-policy-list",
           "settings": {
             "font_size": "0.75rem",
-            "case": "none"
-          },
-          "blocks": {}
-        },
-        "social_links_Ew63Kq": {
-          "type": "social-links",
-          "settings": {
-            "facebook_url": "https://www.facebook.com/",
-            "instagram_url": "https://www.instagram.com/",
-            "youtube_url": "https://www.youtube.com/",
-            "tiktok_url": "https://www.tiktok.com/",
-            "twitter_url": "https://x.com/"
-          },
-          "blocks": {}
+            "case": "uppercase"
+          }
         }
       },
       "block_order": [
         "footer_copyright_jweRK8",
-        "footer_policy_list_VCdnpa",
-        "social_links_Ew63Kq"
+        "footer_policy_list_VCdnpa"
       ],
       "name": "t:names.utilities",
       "settings": {
         "section_width": "page-width",
         "gap": 24,
         "divider_thickness": 1,
-        "divider_color": "{{ settings.color_palette.color2 }}",
-        "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 20,
-        "padding-block-end": 48
+        "divider_color": "rgba(250, 248, 245, 0.12)",
+        "background_color": "#0b0b0c",
+        "padding-block-start": 24,
+        "padding-block-end": 36
       }
     }
   },

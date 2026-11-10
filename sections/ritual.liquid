@@ -1,0 +1,194 @@
+{% comment %}
+  Section contract: The Ritual
+  Renders the 3 application moments (Prime, Apply, Layer) in a clean responsive progression.
+  @example
+  <!-- In templates/index.json: "type": "ritual" -->
+{% endcomment %}
+
+<div class="ritual-section section section--page-width" id="ritual">
+  <div class="ritual-header">
+    {% if section.settings.eyebrow != blank %}
+      <span class="ritual-eyebrow">{{ section.settings.eyebrow }}</span>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2 class="ritual-heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+  </div>
+
+  <div class="ritual-grid">
+    {% for block in section.blocks %}
+      <div class="ritual-card" {{ block.shopify_attributes }}>
+        <span class="ritual-number">{{ block.settings.number }}</span>
+        <h3 class="ritual-title">{{ block.settings.title }}</h3>
+        <p class="ritual-body">{{ block.settings.body }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .ritual-section {
+    padding-block: var(--ritual-padding-top, 80px) var(--ritual-padding-bottom, 100px);
+  }
+
+  .ritual-header {
+    margin-bottom: 48px;
+  }
+
+  .ritual-eyebrow {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(26, 24, 22, 0.6);
+    margin-bottom: 14px;
+  }
+
+  .ritual-heading {
+    font-family: var(--font-heading--family);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-foreground, #1a1816);
+    margin: 0;
+  }
+
+  .ritual-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .ritual-card {
+    background-color: #eae5dc;
+    border-radius: 24px;
+    padding: 36px 30px;
+    border: 1px solid rgba(26, 24, 22, 0.08);
+    box-shadow: 0 14px 34px -20px rgba(11, 11, 12, 0.2);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ritual-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -16px rgba(11, 11, 12, 0.28);
+  }
+
+  .ritual-number {
+    font-family: var(--font-heading--family);
+    font-size: 2.25rem;
+    font-weight: 600;
+    color: rgba(26, 24, 22, 0.35);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .ritual-title {
+    font-family: var(--font-body--family);
+    font-size: 1.1875rem;
+    font-weight: 600;
+    color: #1a1816;
+    margin: 0 0 10px;
+  }
+
+  .ritual-body {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: rgba(26, 24, 22, 0.72);
+    margin: 0;
+  }
+
+  @media (max-width: 989px) {
+    .ritual-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .ritual-card {
+      padding: 28px 24px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "The Ritual",
+  "tag": "section",
+  "class": "section-ritual",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The Ritual"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Three moments, one lasting impression"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Ritual Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Step Number",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step Title",
+          "default": "Prime"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Step Description",
+          "default": "A single press to warm pulse points — wrist, throat, the nape of the neck."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "The Ritual",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "number": "01",
+            "title": "Prime",
+            "body": "A single press to warm pulse points — wrist, throat, the nape of the neck."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "number": "02",
+            "title": "Apply",
+            "body": "Hold the vessel a hand's width away and let the mist settle, never rub."
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "number": "03",
+            "title": "Layer",
+            "body": "Return through the day as the scent softens; the refill is always close."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

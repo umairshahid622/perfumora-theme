@@ -1,0 +1,137 @@
+{% doc %}
+  Renders the Perfumora category filter tabs (All, Female, Male, Unisex)
+  for instant collection filtering with smooth pill indicators and audio feedback.
+{% enddoc %}
+
+<div class="category-filter-tabs" data-category-filter>
+  <div class="category-filter-tabs__inner" role="tablist" aria-label="Filter by gender category">
+    <button
+      type="button"
+      role="tab"
+      class="category-filter-tab is-active"
+      aria-selected="true"
+      data-category="all"
+    >
+      All
+    </button>
+    <button
+      type="button"
+      role="tab"
+      class="category-filter-tab"
+      aria-selected="false"
+      data-category="female"
+    >
+      Female
+    </button>
+    <button
+      type="button"
+      role="tab"
+      class="category-filter-tab"
+      aria-selected="false"
+      data-category="male"
+    >
+      Male
+    </button>
+    <button
+      type="button"
+      role="tab"
+      class="category-filter-tab"
+      aria-selected="false"
+      data-category="unisex"
+    >
+      Unisex
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    function initCategoryFilter() {
+      const filterBars = document.querySelectorAll('[data-category-filter]');
+      filterBars.forEach((bar) => {
+        if (bar.dataset.initialized) return;
+        bar.dataset.initialized = 'true';
+
+        const tabs = bar.querySelectorAll('.category-filter-tab');
+        tabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const cat = tab.dataset.category;
+
+            tabs.forEach((t) => {
+              t.classList.remove('is-active');
+              t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('is-active');
+            tab.setAttribute('aria-selected', 'true');
+
+            if (window.PerfumoraAudio && typeof window.PerfumoraAudio.playClick === 'function') {
+              window.PerfumoraAudio.playClick();
+            }
+
+            const items = document.querySelectorAll('.product-grid__item[data-gender]');
+            items.forEach((item) => {
+              const itemGender = (item.dataset.gender || '').toLowerCase();
+              if (cat === 'all' || itemGender.includes(cat) || (cat === 'unisex' && itemGender === 'unisex')) {
+                item.style.display = '';
+              } else {
+                item.style.display = 'none';
+              }
+            });
+          });
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCategoryFilter);
+    } else {
+      initCategoryFilter();
+    }
+  })();
+</script>
+
+{% stylesheet %}
+  .category-filter-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 32px;
+    width: 100%;
+  }
+
+  .category-filter-tabs__inner {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(26, 24, 22, 0.06);
+    border-radius: 9999px;
+    padding: 4px;
+    gap: 4px;
+    border: 1px solid rgba(26, 24, 22, 0.08);
+  }
+
+  .category-filter-tab {
+    border-radius: 9999px;
+    border: none;
+    background: transparent;
+    color: rgba(26, 24, 22, 0.65);
+    font-family: var(--font-body--family);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 22px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .category-filter-tab:hover:not(.is-active) {
+    color: #1a1816;
+  }
+
+  .category-filter-tab.is-active {
+    background-color: #1a1816;
+    color: #faf8f5;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(11, 11, 12, 0.15);
+  }
+{% endstylesheet %}
+
