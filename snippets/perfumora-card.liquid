@@ -468,5 +468,71 @@
     transform: translateY(-2px);
     box-shadow: 0 12px 28px -6px rgba(154, 113, 119, 0.55);
   }
+
+  /* Zoom-out / 6-grid Dense layout adaptions */
+  [product-grid-view='zoom-out'] .perfumora-card {
+    border-radius: 20px;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__arch {
+    height: clamp(160px, 20vw, 210px);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__bottle-stage {
+    padding: 12px 14px 16px;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__body {
+    padding: 12px 14px 16px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__price-row {
+    margin-top: -24px;
+    margin-bottom: 8px;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__price-pill {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__title {
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__subtitle {
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__sizes {
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__size-btn {
+    height: 26px;
+    padding: 0 8px;
+    font-size: 0.65rem;
+  }
+
+  [product-grid-view='zoom-out'] .perfumora-card__cta {
+    height: 36px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    border-radius: 9999px;
+  }
 {% endstylesheet %}
 

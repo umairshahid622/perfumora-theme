@@ -8,7 +8,6 @@
 <footer
   id="footer"
   class="perfumora-footer"
-  data-tone="dark"
   {{ section.shopify_attributes }}
 >
   <div class="perfumora-footer__inner">
@@ -49,40 +48,6 @@
     </div>
   </div>
 </footer>
-
-<script>
-  (function () {
-    function setupFooterTone() {
-      const header = document.querySelector('header-component') || document.querySelector('#header-component');
-      const footer = document.getElementById('footer');
-      if (!header || !footer) return;
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              header.setAttribute('data-nav-tone', 'dark');
-            } else {
-              header.removeAttribute('data-nav-tone');
-            }
-          });
-        },
-        {
-          rootMargin: '-50px 0px -70% 0px',
-          threshold: 0,
-        }
-      );
-
-      observer.observe(footer);
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setupFooterTone);
-    } else {
-      setupFooterTone();
-    }
-  })();
-</script>
 
 {% stylesheet %}
   .perfumora-footer {

@@ -69,13 +69,20 @@
             }
 
             const items = document.querySelectorAll('.product-grid__item[data-gender]');
+            let visibleCount = 0;
             items.forEach((item) => {
               const itemGender = (item.dataset.gender || '').toLowerCase();
               if (cat === 'all' || itemGender.includes(cat) || (cat === 'unisex' && itemGender === 'unisex')) {
                 item.style.display = '';
+                visibleCount++;
               } else {
                 item.style.display = 'none';
               }
+            });
+
+            const countSpans = document.querySelectorAll('.products-count-wrapper span[role="status"]');
+            countSpans.forEach((span) => {
+              span.textContent = `${visibleCount} item${visibleCount === 1 ? '' : 's'}`;
             });
           });
         });
@@ -87,40 +94,49 @@
     } else {
       initCategoryFilter();
     }
+
+    document.addEventListener('shopify:section:load', initCategoryFilter);
   })();
 </script>
 
 {% stylesheet %}
   .category-filter-tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 32px;
-    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    flex-shrink: 0;
   }
 
   .category-filter-tabs__inner {
     display: inline-flex;
     align-items: center;
-    background-color: rgba(26, 24, 22, 0.06);
+    background-color: rgba(26, 24, 22, 0.08);
     border-radius: 9999px;
-    padding: 4px;
-    gap: 4px;
-    border: 1px solid rgba(26, 24, 22, 0.08);
+    padding: 3px;
+    gap: 2px;
+    border: none;
+    height: 38px;
+    box-sizing: border-box;
   }
 
   .category-filter-tab {
     border-radius: 9999px;
     border: none;
     background: transparent;
-    color: rgba(26, 24, 22, 0.65);
+    color: rgba(26, 24, 22, 0.52);
     font-family: var(--font-body--family);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    padding: 8px 22px;
+    padding: 0 16px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    line-height: 1;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .category-filter-tab:hover:not(.is-active) {
@@ -130,8 +146,8 @@
   .category-filter-tab.is-active {
     background-color: #1a1816;
     color: #faf8f5;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(11, 11, 12, 0.15);
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(11, 11, 12, 0.18);
   }
 {% endstylesheet %}
 

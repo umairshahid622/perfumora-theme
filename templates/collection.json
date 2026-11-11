@@ -10,6 +10,7 @@
   "sections": {
     "section": {
       "type": "section",
+      "disabled": true,
       "blocks": {
         "text_tqQTNE": {
           "type": "text",
@@ -210,7 +211,7 @@
         "padding-inline-start": 0,
         "padding-inline-end": 0,
         "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 0,
+        "padding-block-start": 32,
         "padding-block-end": 32
       }
     }

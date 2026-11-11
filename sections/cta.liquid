@@ -34,23 +34,51 @@
       const cta = document.getElementById('cta');
       if (!header || !cta) return;
 
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              header.setAttribute('data-nav-tone', 'dark');
-            } else {
-              header.removeAttribute('data-nav-tone');
-            }
-          });
-        },
-        {
-          rootMargin: '-50px 0px -70% 0px',
-          threshold: 0,
-        }
-      );
+      let ticking = false;
 
-      observer.observe(cta);
+      function updateTone() {
+        const headerRect = header.getBoundingClientRect();
+        const ctaRect = cta.getBoundingClientRect();
+        const headerMid = (headerRect.top + headerRect.bottom) / 2;
+
+        // Switch to dark tone only when CTA occupies the visual center of the navbar
+        const isUnderNavbar = ctaRect.top <= headerMid && ctaRect.bottom >= headerMid;
+
+        if (isUnderNavbar) {
+          if (header.getAttribute('data-nav-tone') !== 'dark') {
+            header.setAttribute('data-nav-tone', 'dark');
+          }
+        } else {
+          if (header.hasAttribute('data-nav-tone')) {
+            header.removeAttribute('data-nav-tone');
+          }
+        }
+        ticking = false;
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateTone);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      document.addEventListener('scroll', onScroll, { capture: true, passive: true });
+      window.addEventListener('resize', onScroll, { passive: true });
+
+      // IntersectionObserver as secondary trigger
+      if (typeof IntersectionObserver !== 'undefined') {
+        const obs = new IntersectionObserver(() => {
+          updateTone();
+        }, {
+          threshold: [0, 0.05, 0.1, 0.2, 0.5, 0.8, 1.0]
+        });
+        obs.observe(cta);
+      }
+
+      // Run immediately
+      updateTone();
     }
 
     if (document.readyState === 'loading') {
@@ -152,18 +180,41 @@
   header-component[data-nav-tone='dark'] .header-logo span,
   header-component[data-nav-tone='dark'] .menu-list__link,
   header-component[data-nav-tone='dark'] .header-actions a,
-  header-component[data-nav-tone='dark'] .header-actions button,
-  header-component[data-nav-tone='dark'] .header-actions svg,
-  header-component[data-nav-tone='dark'] .header-actions__cart-icon svg,
-  header-component[data-nav-tone='dark'] .sound-toggle-btn {
+  header-component[data-nav-tone='dark'] .header-actions button {
     color: #faf8f5 !important;
-    fill: #faf8f5 !important;
+  }
+
+  /* Cart icon — outline only (stroke white, interior transparent) */
+  header-component[data-nav-tone='dark'] .header-actions__cart-icon svg {
+    color: #faf8f5 !important;
+    fill: none !important;
     stroke: #faf8f5 !important;
   }
 
+  header-component[data-nav-tone='dark'] .header-actions__cart-icon svg path {
+    fill: none !important;
+    stroke: #faf8f5 !important;
+  }
+
+  /* Account icon — outline only */
+  header-component[data-nav-tone='dark'] .account-button__icon,
+  header-component[data-nav-tone='dark'] .account-button__icon path {
+    color: #faf8f5 !important;
+    fill: none !important;
+    stroke: #faf8f5 !important;
+  }
+
+  /* Sound toggle pill button and icon bars */
+  header-component[data-nav-tone='dark'] .sound-toggle__button,
   header-component[data-nav-tone='dark'] .sound-toggle-btn {
     border-color: rgba(250, 248, 245, 0.25) !important;
     background: rgba(250, 248, 245, 0.08) !important;
+    color: #faf8f5 !important;
+  }
+
+  header-component[data-nav-tone='dark'] .sound-toggle__svg rect {
+    fill: #faf8f5 !important;
+    stroke: none !important;
   }
 
   @media (max-width: 749px) {

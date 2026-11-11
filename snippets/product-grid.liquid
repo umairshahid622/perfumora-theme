@@ -24,8 +24,14 @@
   @media screen and (min-width: 750px) {
     {% case section.settings.layout_type %}
       {% when 'grid' %}
-        .product-grid--{{ section.id }}:is(.product-grid--grid) {
-          --product-grid-columns-desktop: repeat(auto-fill, minmax({{ product_card_size }}, 1fr));
+        .product-grid--{{ section.id }}:is(.product-grid--grid):not([product-grid-view='zoom-out']) {
+          --product-grid-columns-desktop: repeat(4, minmax(0, 1fr));
+        }
+
+        @media screen and (min-width: 750px) and (max-width: 1023px) {
+          .product-grid--{{ section.id }}:is(.product-grid--grid):not([product-grid-view='zoom-out']) {
+            --product-grid-columns-desktop: repeat(2, minmax(0, 1fr));
+          }
         }
 
 
@@ -62,16 +68,15 @@
         }
     {% endcase %}
 
-    /* When zoomed out, fit as many 100px-wide columns as possible */
+    /* 6-grid dense view (represented by 6-dots toggle) */
     .product-grid--{{ section.id }}[product-grid-view='zoom-out'] {
-      --product-grid-columns-desktop: repeat(auto-fill, minmax(6.25rem, 1fr));
+      --product-grid-columns-desktop: repeat(6, minmax(0, 1fr));
     }
 
-    .product-grid--{{ section.id }}[product-grid-view='zoom-out'] .product-grid__card {
-      padding-inline-start: var(--zoom-out-padding-inline-start, 0);
-      padding-inline-end: var(--zoom-out-padding-inline-end, 0);
-      padding-block-start: var(--zoom-out-padding-block-start, 0);
-      padding-block-end: var(--zoom-out-padding-block-end, 0);
+    @media screen and (min-width: 750px) and (max-width: 1023px) {
+      .product-grid--{{ section.id }}[product-grid-view='zoom-out'] {
+        --product-grid-columns-desktop: repeat(3, minmax(0, 1fr));
+      }
     }
   }
 {% endstyle %}
@@ -240,15 +245,8 @@
     }
   }
 
-  [product-grid-view='zoom-out'] .product-grid__card > * {
-    display: none;
-  }
-
   [product-grid-view='zoom-out'] {
-    --product-grid-columns-desktop: repeat(
-      10,
-      minmax(clamp(50px, calc(100% - 9 * var(--product-grid-gap)) / 10, 80px), 1fr)
-    );
+    --product-grid-columns-desktop: repeat(6, minmax(0, 1fr));
   }
 
   @media (prefers-reduced-motion: no-preference) {

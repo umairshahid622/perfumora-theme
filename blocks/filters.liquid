@@ -238,6 +238,8 @@
                 {%- endfor -%}
               {% endcapture %}
 
+              {% render 'category-filter-tabs' %}
+
               <div class="facets__filters-wrapper">
                 {% if block_settings.filter_style == 'horizontal' %}
                   {% liquid
@@ -789,6 +791,8 @@
     @media screen and (min-width: 750px) {
       flex-flow: row nowrap;
       height: auto;
+      align-items: center;
+      width: 100%;
     }
   }
 
@@ -800,12 +804,25 @@
 
   .facets--horizontal .facets__filters-wrapper {
     @media screen and (min-width: 750px) {
-      max-width: 60%;
-      display: flex;
-      flex-wrap: wrap;
-      column-gap: var(--gap-xl);
+      max-width: none;
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      column-gap: 22px;
       margin-inline-end: 0;
     }
+  }
+
+  .facets--horizontal .facets__item {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+  }
+
+  .facets--horizontal .facets__item::before,
+  .facets--horizontal .facets__item::after {
+    display: none !important;
+    content: none !important;
   }
 
   /* Facets - Summary */
@@ -840,10 +857,35 @@
 
   .facets--horizontal .facets__summary {
     @media screen and (min-width: 750px) {
-      font-size: var(--font-paragraph--size);
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #1a1816;
       justify-content: flex-start;
-      height: var(--minimum-touch-target);
+      height: 38px;
+      padding: 0;
+      gap: 6px;
+      cursor: pointer;
     }
+  }
+
+  .facets--horizontal .facets__label {
+    @media screen and (min-width: 750px) {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #1a1816;
+      margin: 0;
+      font-family: var(--font-body--family);
+      letter-spacing: 0.01em;
+      text-transform: capitalize;
+    }
+  }
+
+  .facets--horizontal .facets__summary .icon-caret {
+    width: 9px;
+    height: 9px;
+    color: #1a1816;
+    opacity: 0.65;
+    margin: 0;
   }
 
   .facets__summary .icon-caret {
@@ -1013,17 +1055,18 @@
 
   .facets--horizontal .facets__panel-content {
     @media screen and (min-width: 750px) {
-      border-radius: var(--style-border-radius-popover);
+      border-radius: 16px;
       position: absolute;
       top: 100%;
+      margin-top: 8px;
       width: max-content;
       min-width: var(--facets-panel-min-width);
       max-width: var(--facets-panel-width);
       max-height: var(--facets-panel-height);
       z-index: var(--facets-upper-z-index);
-      box-shadow: var(--shadow-popover);
-      border: var(--style-border-popover);
-      background-color: var(--color-background);
+      box-shadow: 0 16px 36px rgba(26, 24, 22, 0.12);
+      border: 1px solid rgba(26, 24, 22, 0.08);
+      background-color: #dfdad0;
       overflow-y: hidden;
       gap: 0;
     }
@@ -1145,11 +1188,16 @@
 
   .facets--horizontal .products-count-wrapper {
     @media screen and (min-width: 750px) {
-      display: flex;
+      display: inline-flex;
       margin-inline-start: auto;
+      margin-inline-end: 0;
       flex-shrink: 0;
       align-items: center;
-      height: var(--minimum-touch-target);
+      height: 38px;
+      font-size: 0.85rem;
+      color: rgba(26, 24, 22, 0.6);
+      font-family: var(--font-body--family);
+      white-space: nowrap;
     }
   }
 
